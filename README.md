@@ -5,4 +5,4 @@ As for IoT solutions, communication architecture between transductors and the us
 
 This PoC analyzes how the protocol stack needed for a test IoT solution could be implemented as a single IoT Gateway on a Raspberry Pi.
 
-A complete description of the PoC can be found in https://georgsmeinung.wordpress.com/2020/05/23/iot-gateway-on-a-pi/
+A complete description of the PoC can be found in https://jorgenicolauar.wordpress.com/2020/05/23/iot-gateway-on-a-pi/
