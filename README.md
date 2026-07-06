@@ -19,9 +19,9 @@ We have built a premium, interactive, and bilingual documentation hub containing
 ### Key Documentation Features:
 *   **Bilingual Content**: Instant toggle between English and Spanish translations.
 *   **Dark/Light Themes**: Smooth transition between slate-dark and clean-light modes.
-*   **Academic vs. PoC Perspectives**: Switch between the simplified DHT11 PoC (Blog Article) and the broader multi-node Ethernet/WiFi DHT22/LDR system (Academic Report).
+*   **Full Thesis & Blog Integration**: Access the complete Spanish *Trabajo Final Integrador* (Academic Thesis) or the full bilingual version of the *IoT Gateway on a Pi* blog post directly from the hub.
 *   **Firmware Center**: Interactive side-by-side C++ code viewers with click-to-copy functionality.
-*   **Diagram Gallery**: High-resolution lightbox modals for all schematics and flowcharts.
+*   **Diagram Gallery**: High-resolution lightbox modals for all schematics, flowcharts, and thesis figures.
 
 *The original published blog post can be found online at [Jorge Nicolau's WordPress Blog](https://jorgenicolauar.wordpress.com/2020/05/23/iot-gateway-on-a-pi/).*
 
@@ -48,7 +48,7 @@ The system coordinates edge nodes linked over Wi-Fi and Ethernet to a central Ga
 ├── docs/                      # Interactive documentation folder
 │   ├── index.html             # Main documentation entry point
 │   ├── style.css              # External stylesheet
-│   └── images/                # Visual schematics & screenshots
+│   └── images/                # Visual schematics, screenshots & thesis figures (image1-9)
 │
 ├── presentacion/              # Academic presentation materials
 │   └── Trabajo Final Integrador/
