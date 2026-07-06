@@ -250,83 +250,690 @@
 
         <!-- TAB 2: TECHNICAL THESIS (TFI) -->
         <div class="content-panel" id="panel-thesis">
-            <h1 class="lang-en">Trabajo Final Integrador: Domotic Control Central</h1>
-            <h1 class="lang-es">Trabajo Final Integrador: Central de Control Domótico</h1>
+            <h1>
+                <span class="lang-en">Technical Thesis: Domotic Control Central (ES)</span>
+                <span class="lang-es">Trabajo Final Integrador: Central de Control Domótico</span>
+            </h1>
             <p class="lead-text">
-                <span class="lang-en">Academic thesis submitted by Jorge Enrique Nicolau describing a home automation central focused on lighting control and presence simulation.</span>
-                <span class="lang-es">Tesis académica presentada por Jorge Enrique Nicolau que describe una central de automatización del hogar enfocada en el control de iluminación y simulación de presencia.</span>
+                <span class="lang-en">Full academic report submitted by Jorge Enrique Nicolau detailing the design, hardware, protocols, and implementation of a domestic home automation central.</span>
+                <span class="lang-es">Reporte académico completo presentado por Jorge Enrique Nicolau detallando el diseño, hardware, protocolos e implantación de una central domótica de automatización del hogar.</span>
             </p>
 
-            <h2>1. <span class="lang-en">Objective of the Solution</span><span class="lang-es">Objetivo de la Solución</span></h2>
-            <p>
-                <span class="lang-en">The main objective is to describe a domestic electronic control system, its hardware/software components, communication protocols, and visual representation. The platform features both mobile and web interfaces allowing users to monitor ambient parameters, switch actuators manually, set automated routines, and execute presence simulation to improve home security.</span>
-                <span class="lang-es">El objetivo principal es describir una solución electrónica de uso doméstico, sus componentes hardware y software, protocolos de comunicación e interfaz visual. La plataforma cuenta con interfaces móviles y web que permiten al usuario monitorear parámetros ambientales, operar actuadores manualmente, programar rutinas automatizadas y ejecutar una simulación de presencia para mejorar la seguridad del hogar.</span>
-            </p>
+            <div class="glass-card" style="margin-bottom: 30px; border-left: 4px solid var(--accent-purple);">
+                <h3 style="margin-top: 0; color: var(--accent-purple);">Trabajo Final Integrador</h3>
+                <p style="margin-bottom: 8px;"><strong>Alumno:</strong> Jorge Enrique NICOLAU (<a href="mailto:jenicolau@gmail.com">jenicolau@gmail.com</a>)</p>
+                <p style="margin-bottom: 8px;"><strong>Solución Propuesta:</strong> Central de Control Domótico</p>
+                <p style="margin-bottom: 8px;"><strong>Empresa o industria a aplicar:</strong> Control electrónico de dispositivos caseros.</p>
+                <p style="margin-bottom: 8px;"><strong>Objetivo del trabajo:</strong> Describir una solución de uso doméstico, sus componentes, tecnología, mapa de solución e implementación a alto nivel. La plataforma de control domótico de dispositivos de iluminación contará con administración vía Web y vía móvil tanto para monitoreo de sensores como para utilización de activadores; además contará con un módulo de de programación de artefactos y simulación de presencia.</p>
+                <p style="margin-bottom: 0;"><strong>Ámbito de aplicación de la solución WiFi y Ethernet:</strong> Control Domótico en base a la información recolectada por sensores ambientales y Simulación de Presencia.</p>
+            </div>
 
-            <h2>2. <span class="lang-en">Functional Description</span><span class="lang-es">Descripción Funcional</span></h2>
-            <p>
-                <span class="lang-en">Wired and wireless transceiver nodes communicate with a central coordinator. Wired nodes rely on Arduino Uno coupled with an Ethernet shield, connected via physical LAN wiring. Wireless nodes utilize NodeMCU boards, communicating over local Wi-Fi.</span>
-                <span class="lang-es">Nodos transceptores cableados e inalámbricos se comunican con un coordinador central. Los nodos cableados utilizan placas Arduino Uno junto con un protector Ethernet, conectados por cable LAN. Los nodos inalámbricos utilizan placas NodeMCU, comunicándose a través de la red Wi-Fi local.</span>
-            </p>
+            <h2>1. Descripción de Componentes de la Solución</h2>
+            
+            <p><strong>Sensores a utilizar:</strong></p>
+            <ul>
+                <li><strong>Temperatura y Humedad (Sensor DHT22):</strong> De los sensores más comunes de uso más extendido con Arduino están los sensores DHT11 y DHT22; se eligió este último por su mejor rango de medición tanto de temperatura (0 a 50 ºC el DHT11 vs -40 a 80 ºC el DHT22) como de humedad (20 a 90% del DHT11 vs 0 a 100% del DHT22); además tiene la ventaja de consumir menos energía ya que el DHT22 envía lecturas cada 2 segundos contra 1 segundo del DHT11. Por último, para un nivel de precio no muy distinto (USD 1 a 5 del DHT11 vs USD 4 a 10 DHT22) el DHT22 (+/-0.5ºC y +/-2% de humedad) es más preciso que el DHT11 (+/-2 ºC y +/-5% de humedad).</li>
+                <li><strong>Fotoeléctrico (Sensor basado en LDR y comparador LM393):</strong> Generalmente implementado como un módulo de detección de un fotorresistor y comparador de voltaje en un chip para conexión a Arduino.</li>
+            </ul>
+
+            <p style="margin-top: 15px;"><strong>Actuadores a utilizar:</strong></p>
+            <ul>
+                <li><strong>Relés (Módulo con relé SONGLE):</strong> Normalmente implementado en un módulo de un canal a 5V compatible con el conexionado de Arduino, se selecciona este módulo dada su capacidad de carga a controlar (hasta 10A 250VAC).</li>
+            </ul>
+
+            <p style="margin-top: 15px;"><strong>Protocolos a utilizar:</strong></p>
+            <ul>
+                <li><strong>MQTT:</strong> Utilizado para la conexión lógica de dispositivos IoT con el Broker.</li>
+                <li><strong>HTTP:</strong> Utilizado para la conexión de la interfaz de usuario final con Node-RED para la composición del Dashboard.</li>
+                <li><strong>WiFi:</strong> Utilizado para la conexión de placas inalámbricas con el Broker MQTT.</li>
+                <li><strong>Ethernet:</strong> Utilizado para la conexión de placas cableadas con el Broker MQTT.</li>
+            </ul>
+
+            <p style="margin-top: 15px;"><strong>Gateway MQTT & Interfaces Gráficas:</strong></p>
+            <ul>
+                <li><strong>Gateway MQTT:</strong> Broker en la red local implementado con una Raspberry Pi Zero W tanto con interfaz Ethernet (OTG Ethernet) como WiFi (onboard en el Pi Zero W). El software de broker se implementa mediante Mosquitto MQTT Server.</li>
+                <li><strong>Interfaces Gráficas y Dashboards:</strong> El dashboard se implementa mediante una instalación local de Node-RED Dashboard, también funcionando sobre la Raspberry Pi Zero W.</li>
+            </ul>
+
+            <h2>2. Descripción Funcional General de la Solución</h2>
+            <p>La solución consiste en una central domótica orientada al control de la iluminación y simulación de presencia. Consiste en dos tipos básicos de transductores:</p>
+            <ol style="margin-left: 20px; margin-bottom: 20px;">
+                <li><strong>Los actuadores</strong> son placas con módulo relé compatible con Arduino conectado a una placa NodeMCU ESP8266 (específicamente el board ESP8266 12E NodeMCU basado en el MCU ESP8266) si son inalámbricos o un Arduino Uno con shield Ethernet si están “cableados” a la LAN.</li>
+                <li><strong>Los sensores</strong> son placas con módulo de sensor fotoeléctrico compatible con Arduino conectado a una placa Arduino Nano conectado a una placa NodeMCU si son inalámbricos o un Arduino Uno con shield Ethernet si están conectados a la LAN. También hay una versión que conecta un sensor de temperatura y humedad a la placa Arduino o NodeMCU.</li>
+            </ol>
+            <p>Los dos tipos de placa tienen en el microcontrolador una rutina que implementa un cliente de MQTT. Para el caso de la placa actuadora está leyendo a intervalos regulares su correspondiente tópico de estado en el broker MQTT y reacciona abriendo o cerrando el relé en función del valor leído. Para el caso de la placa con el sensor, está escribiendo a intervalos regulares sus lecturas del sensor fotovoltaico o de valores de temperatura y de humedad ambiente en su correspondiente tópico en el broker MQTT.</p>
+            <p>Por ser dispositivos hogareños, la alimentación de las placas está dada por fuentes adaptadoras de 220V AC a 5V CC.</p>
+            <p>La “central” de este esquema domótico está implementada por una Raspberry Pi Zero W que implementa un Broker MQTT, un servidor Node-RED y un backend con cliente MQTT (incorporado en Node-RED). La parte del servicio del broker del gateway Raspberry es el que se encarga de publicar en los tópicos de los sensores y distribuir en los tópicos de los actuadores. La parte del servidor Node-RED publica una aplicación web responsiva de modo de poder ser accedida tanto por clientes PC como clientes móviles con una interfaz de usuario adaptativa. Toda la lógica de control e interfaz de backend está implementada mediante Node-RED.</p>
+
             <div class="callout-box">
-                <p>
-                    <strong><span class="lang-en">Actuators:</span><span class="lang-es">Actuadores:</span></strong>
-                    <span class="lang-en"> Relays read status topics regularly and toggle active loads (e.g. lamps, heaters). High voltage isolations are done via optocouplers.</span>
-                    <span class="lang-es"> Los relés leen los tópicos de estado con regularidad y alternan cargas activas (ej. lámparas, calentadores). Las aislaciones de alta tensión se realizan mediante optoacopladores.</span>
-                </p>
-            </div>
-            <div class="callout-box warning">
-                <p>
-                    <strong><span class="lang-en">Sensors:</span><span class="lang-es">Sensors:</span></strong>
-                    <span class="lang-en"> Photoelectric LDR modules analyze ambient light. Temperature and humidity values are read from DHT22 sensors and published to the local broker.</span>
-                    <span class="lang-es"> Los módulos LDR fotoeléctricos analizan la luz ambiental. Los valores de temperatura y humedad se leen desde sensores DHT22 y se publican en el broker local.</span>
-                </p>
+                <p><strong>Caso de Uso Típico (Sensor/Actuador):</strong> Un caso típico es el sensor de humedad que reporta el valor en un tópico en el que también está suscrito un actuador de relé que tiene conectado un humidificador. La relación de activación por umbral se implementa en Node-RED conectando un nodo MQTT In, un nodo Función (con la lógica) y un nodo MQTT Out de la siguiente manera:</p>
             </div>
 
-            <h2>3. <span class="lang-en">Gateway and Rule Engine Integration</span><span class="lang-es">Integración de Gateway y Motor de Reglas</span></h2>
-            <p>
-                <span class="lang-en">The gateway consists of a Raspberry Pi Zero W hosting a Mosquitto MQTT broker and a Node-RED engine. Node-RED maps topics dynamically and links sensors directly to actuators. For instance, when humidity readings drop below a threshold, the engine publishes an 'on' message to the humidifier topic automatically.</span>
-                <span class="lang-es">El gateway consta de una Raspberry Pi Zero W que aloja un broker Mosquitto MQTT y un motor Node-RED. Node-RED mapea tópicos dinámicamente y vincula sensores directamente a actuadores. Por ejemplo, cuando las lecturas de humedad caen por debajo de un umbral, el motor publica automáticamente un mensaje 'on' en el tópico del humidificador.</span>
-            </p>
+            <div class="diagram-container" onclick="openLightbox('images/image1.png', 'Flujo de Regla del Humidificador en Node-RED / Node-RED Humidifier Automation Flow')">
+                <img class="diagram-img" src="images/image1.png" alt="Flujo de Regla de Humidificador Node-RED">
+                <div class="diagram-caption">Figura 1: Flujo en Node-RED que conecta la entrada MQTT, la evaluación de umbral y la salida MQTT.</div>
+            </div>
+
+            <p>Y dentro de la función simplemente se evalúa si activar o no el humidificador (el valor de humedad leído se recibe en <code>msg.payload</code>, se evalúa y se retransmite hacia el nodo de salida):</p>
+
+            <div class="diagram-container" onclick="openLightbox('images/image3.png', 'Código de Evaluación en Nodo Función / Node-RED Function Node Logic')">
+                <img class="diagram-img" src="images/image3.png" alt="Código de Evaluación Node-RED">
+                <div class="diagram-caption">Figura 2: Código interno del nodo de función evaluando el umbral de humedad.</div>
+            </div>
+
+            <h2>3. Esquemático de Arquitectura General de la Solución</h2>
+            <p>El diagrama general de despliegue de la solución, simplificado a un actuador inalámbrico, un sensor conectado por LAN, el broker local, las interfaces de usuario y el motor de reglas de Node-RED:</p>
+
+            <div class="diagram-container" onclick="openLightbox('images/image2.png', 'Esquemático de la Arquitectura General / General Solution Deployment Schematic')">
+                <img class="diagram-img" src="images/image2.png" alt="Arquitectura General de Despliegue">
+                <div class="diagram-caption">Figura 3: Esquemático completo que ilustra los sectores WiFi y Ethernet del gateway domótico.</div>
+            </div>
+
+            <p>Se diferencian tres sectores principales:</p>
+            <ul>
+                <li><strong>Los actuadores conectados al Gateway por WiFi:</strong> Implementan la pila tecnológica basada en NodeMCU ESP8266.</li>
+                <li><strong>Los actuadores conectados al Gateway por Ethernet:</strong> Implementan la pila tecnológica basada en Arduino Uno con Shield Ethernet.</li>
+                <li><strong>Gateway y Tablero IoT:</strong> Raspberry Pi Zero W ejecutando Mosquitto (Broker MQTT local) y Node-RED.</li>
+            </ul>
+
+            <h2>4. Ejemplo de Arquitectura Detallada de la Solución</h2>
+            <p>En esta sección se describe el esquema detallado de bajo nivel para la conexión física del sensor de temperatura y humedad DHT22 a la placa inalámbrica NodeMCU ESP8266, y el firmware correspondiente en C++.</p>
+
+            <h3>4.1. Conexión del Sensor DHT22 al NodeMCU ESP8266</h3>
+            <p>El conexionado físico del sensor y del simulador de actuador (un diodo LED rojo) se realiza de la siguiente manera:</p>
+
+            <div class="diagram-container" onclick="openLightbox('images/image5.png', 'Conexionado Físico del Sensor DHT22 al NodeMCU / Physical Connection Schematic')">
+                <img class="diagram-img" src="images/image5.png" alt="Conexión Física DHT22 NodeMCU">
+                <div class="diagram-caption">Figura 4: Diagrama de conexión física de componentes y señales al microcontrolador.</div>
+            </div>
+
+            <p>Correlación de pines entre el sensor DHT22, el diodo LED y el NodeMCU ESP8266 (ESP-12E):</p>
+
+            <div style="display: flex; gap: 20px; flex-wrap: wrap; margin-bottom: 24px;">
+                <div style="flex: 1; min-width: 200px;" class="diagram-container" onclick="openLightbox('images/image4.png', 'Sensor DHT22')">
+                    <img class="diagram-img" src="images/image4.png" alt="Sensor DHT22">
+                    <div class="diagram-caption">Figura 5a: Sensor DHT22.</div>
+                </div>
+                <div style="flex: 1; min-width: 250px;" class="diagram-container" onclick="openLightbox('images/image7.jpg', 'Pinout de ESP-12E NodeMCU')">
+                    <img class="diagram-img" src="images/image7.jpg" alt="NodeMCU Pinout">
+                    <div class="diagram-caption">Figura 5b: Pinout de NodeMCU ESP8266 (ESP-12E).</div>
+                </div>
+                <div style="flex: 1; min-width: 200px;" class="diagram-container" onclick="openLightbox('images/image6.png', 'Montaje físico en breadboard')">
+                    <img class="diagram-img" src="images/image6.png" alt="Montaje físico en breadboard">
+                    <div class="diagram-caption">Figura 5c: Montaje físico del prototipo en breadboard.</div>
+                </div>
+            </div>
+
+            <table class="compare-table">
+                <thead>
+                    <tr>
+                        <th>Pin DHT22</th>
+                        <th>Pin ESP12-E NodeMCU v3</th>
+                        <th>Descripción</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>VDD (1)</strong></td>
+                        <td>3V3</td>
+                        <td>Alimentación del sensor mediante la salida regulada de 3.3V en placa.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>DATA (2)</strong></td>
+                        <td>17-GPIO2-TXD1 (o pin configurado)</td>
+                        <td>Transmisión serial de datos digitales de humedad y temperatura.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>GND (4)</strong></td>
+                        <td>GND</td>
+                        <td>Conexión a tierra común.</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <p style="margin-top: 15px;">Este módulo NodeMCU está alimentado por una fuente adaptadora de 220V CA a 5V CC conectada directamente a su puerto micro USB.</p>
+
+            <h3>4.2. Rutina del NodeMCU para la lectura del DHT22 y cliente MQTT</h3>
+            <p>El programa del microcontrolador realiza la lectura del sensor DHT22, establece la conexión a la red Wi-Fi y mantiene un cliente MQTT para leer y escribir en los tópicos correspondientes:</p>
+
+            <div class="code-container">
+                <div class="code-header">
+                    <span class="code-title">
+                        <span class="code-circle red"></span>
+                        <span class="code-circle yellow"></span>
+                        <span class="code-circle green"></span>
+                        DHT22_ESP8266_MQTT.ino
+                    </span>
+                    <button class="btn-copy" onclick="copyCode(this)">Copy</button>
+                </div>
+                <pre class="code-pre"><code>// Rutina MCU para ESP8266, lectura DHT22 y escritura con MQTT
+#include "DHT.h" // Bibliotecas con funciones de acceso al sensor DHT22
+#include &lt;PubSubClient.h&gt; // Bibliotecas con funciones que implementan MQTT
+#include &lt;ESP8266WiFi.h&gt; // Bibliotecas con funciones de conexión a WiFi
+
+const char* ssid = "********"; // En la implementación, el nombre de la WiFi
+const char* password = "********"; // En la implementación, el password de la WiFi
+
+char* topicTemp = "/casa/temperatura"; // Tópico en el que va a escribir la temperatura 
+char* topicHum = "/casa/humedad"; // Tópico en el que va a escribir la humedad
+char* server = "XX.XX.XX.XX"; // Server MQTT--aquí va la IP del Raspberry Pi Zero W
+char* hellotopic = "hello_topic"; // Tópico de Prueba 
+
+#define DHTPIN 17     // En cuál PIN está conectado (GPIO2)
+#define DHTTYPE DHT22   // DHT 22 (AM2302); código interno de DHT
+#define REPORT_INTERVAL 30 // reporta la temperatura cada 30 segundos
+
+String clientName;
+DHT dht(DHTPIN, DHTTYPE, 15);
+WiFiClient wifiClient;
+PubSubClient client(server, 1883, callback, wifiClient);
+
+float oldH;
+float oldT;
+
+void setup() {
+  Serial.begin(38400);
+  Serial.println("Inicialización DHT");
+  delay(20);
+  Serial.println();
+  Serial.println();
+  Serial.print("Conectando a ");
+  Serial.println(ssid);
+  WiFi.mode(WIFI_STA);
+  WiFi.begin(ssid, password);
+  while (WiFi.status() != WL_CONNECTED) {
+    delay(500);
+    Serial.print(".");
+  }
+  Serial.println("");
+  Serial.println("WiFi Conectado");
+  Serial.println("Dirección IP: ");
+  Serial.println(WiFi.localIP());
+  clientName += "esp8266-";
+  uint8_t mac[6];
+  WiFi.macAddress(mac);
+  clientName += macToStr(mac);
+  clientName += "-";
+  clientName += String(micros() & 0xff, 16);
+  Serial.print("Conectando a ");
+  Serial.print(server);
+  Serial.print(" como ");
+  Serial.println(clientName);
+  
+  if (client.connect((char*) clientName.c_str())) {
+    Serial.println("Conectado al Broker MQTT");
+    Serial.print("El tópico es: ");
+    Serial.println(hellotopic);
+    if (client.publish(hellotopic, "hello from ESP8266")) {
+      Serial.println("Publicado OK");
+    } else {
+      Serial.println("Falló Publicación");
+    }
+  } else {
+    Serial.println("Falló conexión a MQTT");
+    Serial.println("Se resetea y prueba de nuevo...");
+    abort();
+  }
+  dht.begin();
+  oldH = -1;
+  oldT = -1;
+}
+
+void loop() {
+  float h = dht.readHumidity();
+  float t = dht.readTemperature();
+  if (isnan(h) || isnan(t)) {
+    Serial.println("¡Falla al leer del sensor DHT!");
+    return;
+  }
+  Serial.print("Humedad: ");
+  Serial.print(h);
+  Serial.print(" %	");
+  Serial.print("Temperatura: ");
+  Serial.print(t);
+  Serial.println(" *C ");
+  
+  String payloadH = String(h);
+  String payloadT = String(t);
+  
+  if (t != oldT || h != oldH ) {
+    sendTemperature(payloadH, payloadT);
+    oldT = t;
+    oldH = h;
+  }
+  
+  int cnt = REPORT_INTERVAL;
+  while (cnt--) {
+    delay(1000);
+  }
+}
+
+void sendTemperature(String plHum, String plTem) {
+  if (!client.connected()) {
+    if (client.connect((char*) clientName.c_str())) {
+      Serial.println("Conectado nuevamente a Broker MQTT");
+      Serial.print("Los tópicos son: ");
+      Serial.print(topicTemp);
+      Serial.print(" y ");
+      Serial.println(topicHum);
+    } else {
+      Serial.println("Falló conexión a MQTT");
+      Serial.println("Se resetea y prueba de nuevo...");
+      abort();
+    }
+  }
+  if (client.connected()) {
+    Serial.print("Enviando lectura al server: Humedad ");
+    Serial.println(plHum);
+    if (client.publish(topicHum, (char*) plHum.c_str())) {
+      Serial.println("Publicada Humedad OK");
+    } else {
+      Serial.println("Falló publicación Humedad");
+    }
+    Serial.print("Enviando lectura al server: Temperatura ");
+    Serial.println(plTem);
+    if (client.publish(topicTemp, (char*) plTem.c_str())) {
+      Serial.println("Publicada Temperatura OK");
+    } else {
+      Serial.println("Falló publicación Temperatura");
+    }
+  }
+}
+
+void callback(char* topic, byte* payload, unsigned int length) {
+  // handle message arrived
+}
+
+String macToStr(const uint8_t* mac) {
+  String result;
+  for (int i = 0; i < 6; ++i) {
+    result += String(mac[i], 16);
+    if (i < 5) result += ':';
+  }
+  return result;
+}</code></pre>
+            </div>
+
+            <h2>5. Implantación del Mosquitto MQTT en el Raspberry Pi Zero W</h2>
+            <p>En el servidor Raspberry Pi se debe automatizar la inicialización de Mosquitto en las rutinas de inicio de Raspbian. Para comprobar el funcionamiento local de Mosquitto podemos iniciar una sesión SSH y utilizar los comandos CLI correspondientes:</p>
+
+            <p>1. Terminal de Suscripción (Escucha):</p>
+            <div class="code-container">
+                <div class="code-header">
+                    <span class="code-title">
+                        <span class="code-circle red"></span>
+                        <span class="code-circle yellow"></span>
+                        <span class="code-circle green"></span>
+                        Terminal (Suscripción SSH)
+                    </span>
+                    <button class="btn-copy" onclick="copyCode(this)">Copy</button>
+                </div>
+                <pre class="code-pre"><code>mosquitto_sub -d -t hello_topic</code></pre>
+            </div>
+
+            <p>2. Terminal de Publicación (Envío):</p>
+            <div class="code-container">
+                <div class="code-header">
+                    <span class="code-title">
+                        <span class="code-circle red"></span>
+                        <span class="code-circle yellow"></span>
+                        <span class="code-circle green"></span>
+                        Terminal (Publicación SSH)
+                    </span>
+                    <button class="btn-copy" onclick="copyCode(this)">Copy</button>
+                </div>
+                <pre class="code-pre"><code>mosquitto_pub –d –t hello_topic –m "hello from RaspberryPi"</code></pre>
+            </div>
+
+            <p>Al publicar el mensaje, la ventana de suscripción visualizará en tiempo real: <code>"hello from RaspberryPi"</code>.</p>
+
+            <h2>6. Implantación del Dashboard en Node-RED en el Raspberry Pi</h2>
+            <p>Se utiliza Node-RED para implementar el flujo de lectura/publicación de tópicos de control y visualizaciones del estado. Node-RED define los flujos de servicios y proporciona interfaces de usuario responsivas que se actualizan en tiempo real.</p>
+            <p>Definición del flujo de lectura de tópicos de variables ambientales y actuador:</p>
+
+            <div class="diagram-container" onclick="openLightbox('images/image8.png', 'Flujo de Dashboard en Node-RED / Node-RED Dashboard Logic Flow')">
+                <img class="diagram-img" src="images/image8.png" alt="Flujo Dashboard Node-RED">
+                <div class="diagram-caption">Figura 6: Flujo de conexión de nodos de suscripción MQTT a componentes gráficos del dashboard.</div>
+            </div>
+
+            <p>Vistas finales responsivas del tablero:</p>
+
+            <div class="diagram-container" onclick="openLightbox('images/image9.png', 'Tablero en Navegador Web y Smartphone / Responsive Dashboard Rendering')">
+                <img class="diagram-img" src="images/image9.png" alt="Dashboard Rendered PC and Phone">
+                <div class="diagram-caption">Figura 7: Visualización del dashboard en una PC con navegador web (izquierda) y en un Smartphone (derecha).</div>
+            </div>
+
+            <h2>7. Observaciones, Conclusiones y Necesidad de Mejora</h2>
+            <p>Esta solución está planteada como una prueba de concepto (PoC) de la instalación de todos los componentes involucrados en una implementación de IoT, desde el sensor hasta el usuario final, eligiendo explícitamente no delegar tareas a plataformas en la nube para comprobar el funcionamiento de cada capa.</p>
+            <p>Para una versión productiva o comercial, es aconsejable utilizar brokers, repositorios de datos y motores de visualización en la nube (ej. AWS IoT, Google Cloud IoT, Azure IoT Hub) para mejorar redundancia, escalabilidad y disponibilidad, además de simplificar las tareas de seguridad en redes expuestas a internet.</p>
+            <p>El conexionado físico actual se monta sobre breadboards de desarrollo rápido. En un despliegue real, se debería mandar a fabricar placas de circuito impreso (PCB) dedicadas para minimizar el empaquetamiento y optimizar el consumo de energía, permitiendo el uso autónomo con baterías que reporten su nivel de carga para mantenimiento predictivo.</p>
+            <p>Finalmente, la solución podría expandirse con un módulo histórico de almacenamiento de datos ambientales, abriendo las puertas para análisis estadísticos y algoritmos predictivos basados en herramientas de Ciencia de Datos (Data Science).</p>
+
+            <h2>Referencias y Notas al Pie</h2>
+            <div class="glass-card" style="font-size: 0.88rem; padding: 20px;">
+                <ol style="margin-left: 20px; line-height: 1.6;">
+                    <li>Digital-output relative humidity & temperature sensor/module DHT22 (AM2302) Datasheet: <a href="https://www.sparkfun.com/datasheets/Sensors/Temperature/DHT22.pdf" target="_blank">Sparkfun DHT22.pdf</a></li>
+                    <li>Complete Guide for DHT11/DHT22 Humidity and Temperature Sensor with Arduino: <a href="https://randomnerdtutorials.com/complete-guide-for-dht11dht22-humidity-and-temperature-sensor-with-arduino/" target="_blank">RandomNerdTutorials Guide</a></li>
+                    <li>LMx93-N, LM2903-N Low-Power, Low-Offset Voltage, Dual Comparators: <a href="http://www.ti.com/lit/ds/symlink/lm2903-n.pdf" target="_blank">Texas Instruments LM2903-N.pdf</a></li>
+                    <li>Photoresistor sensor module light detector for Arduino: <a href="https://www.buildcircuit.com.au/photoresistor-sensor-module-light-detector-for-arduino-in-sydney-australia/" target="_blank">BuildCircuit Guide</a></li>
+                    <li>SONGLE Relay Datasheet: <a href="http://www.circuitbasics.com/wp-content/uploads/2015/11/SRD-05VDC-SL-C-Datasheet.pdf" target="_blank">SRD-05VDC-SL-C-Datasheet.pdf</a></li>
+                    <li>Módulo Relé 1 Canal 5V para Arduino: <a href="https://www.mrwatt.eu/es/tienda/electronica-y-domotica/electronica-y-domotica-modulos/modulo-rele-1-canal-5v-para-arduino.html" target="_blank">Mr. Watt Tienda</a></li>
+                    <li>Raspberry Pi Zero W: <a href="https://www.raspberrypi.org/products/raspberry-pi-zero-w/" target="_blank">Raspberry Pi Products</a></li>
+                    <li>Plugable USB 2.0 OTG Micro-B to 10/100 Ethernet Adapter: <a href="https://plugable.com/products/usb2-otge100/" target="_blank">Plugable OTG Card</a></li>
+                    <li>Eclipse Mosquitto. An open source MQTT broker: <a href="https://mosquitto.org/" target="_blank">Mosquitto.org</a></li>
+                    <li>Node-RED Dashboard Nodes: <a href="https://flows.nodered.org/node/node-red-dashboard" target="_blank">Node-RED Dashboard Plugin</a></li>
+                    <li>NodeMCU Open-Source Firmware: <a href="https://www.nodemcu.com/index_en.html" target="_blank">NodeMCU.com</a></li>
+                    <li>Insight Into ESP8266 NodeMCU Arduino Tutorial: <a href="https://lastminuteengineers.com/esp8266-nodemcu-arduino-tutorial/" target="_blank">LastMinuteEngineers Tutorial</a></li>
+                    <li>Arduino Uno Rev3: <a href="https://store.arduino.cc/usa/arduino-uno-rev3" target="_blank">Arduino Uno Rev3 Store</a></li>
+                    <li>Arduino Ethernet Shield 2: <a href="https://store.arduino.cc/usa/arduino-ethernet-shield-2" target="_blank">Arduino Ethernet Shield Store</a></li>
+                    <li>Arduino Client for MQTT: <a href="https://pubsubclient.knolleary.net/" target="_blank">PubSubClient.net</a></li>
+                    <li>Adafruit MQTT Library: <a href="https://github.com/adafruit/Adafruit_MQTT_Library" target="_blank">Adafruit GitHub</a></li>
+                    <li>Cayenne MQTT Arduino Library: <a href="https://github.com/myDevicesIoT/Cayenne-MQTT-Arduino" target="_blank">Cayenne GitHub</a></li>
+                    <li>AWS IoT Arduino Yún SDK: <a href="https://github.com/aws/aws-iot-device-sdk-arduino-yun" target="_blank">AWS IoT GitHub</a></li>
+                    <li>AWS IoT Services: <a href="https://aws.amazon.com/iot/" target="_blank">AWS IoT Platform</a></li>
+                    <li>Google Cloud IoT Solutions: <a href="https://cloud.google.com/solutions/iot/" target="_blank">Google Cloud IoT</a></li>
+                    <li>Microsoft Azure IoT Hub Services: <a href="https://azure.microsoft.com/en-us/services/iot-hub/" target="_blank">Microsoft Azure IoT Hub</a></li>
+                    <li>Node-RED Low-code programming: <a href="https://nodered.org/" target="_blank">NodeRED.org</a></li>
+                    <li>Datasheet DHT22 (SparkFun): <a href="https://www.sparkfun.com/datasheets/Sensors/Temperature/DHT22.pdf" target="_blank">DHT22 SparkFun.pdf</a></li>
+                    <li>Datasheet ESP8266EX (Version 5.8): <a href="https://lastminuteengineers.com/datasheets/ESP8266-datasheet.pdf" target="_blank">ESP8266EX.pdf</a></li>
+                </ol>
+            </div>
         </div>
-
-        <!-- TAB 3: BLOG ARTICLE -->
         <div class="content-panel" id="panel-blog">
-            <h1>IoT Gateway on a Pi (Blog Article)</h1>
+            <h1>
+                <span class="lang-en">IoT Gateway on a Pi</span>
+                <span class="lang-es">Pasarela IoT en una Raspberry Pi</span>
+            </h1>
             <p class="lead-text">
                 <span class="lang-en">Detailed article focusing on implementing the protocol stack on a Raspberry Pi Zero W, deploying Node-RED dashboard UI, and ESP8266 MQTT client coding.</span>
                 <span class="lang-es">Artículo detallado enfocado en implementar la pila de protocolos en una Raspberry Pi Zero W, desplegar la UI de dashboard Node-RED y programar el cliente MQTT de ESP8266.</span>
             </p>
 
-            <h2><span class="lang-en">Technology Stack</span><span class="lang-es">Pila Tecnológica</span></h2>
+            <h2>
+                <span class="lang-en">TL;DR</span>
+                <span class="lang-es">Resumen Ejecutivo</span>
+            </h2>
             <p>
-                <span class="lang-en">The standard IoT layers are implemented fully on-premises:</span>
-                <span class="lang-es">Las capas estándar de IoT están totalmente implementadas localmente:</span>
+                <span class="lang-en">As for IoT solutions, communication architecture between transducers and the user interface (UI) is key for having a scalable and flexible platform in place. The almost exclusively used protocol to communicate edge components with IoT Gateways is MQTT, whose brokers are usually hosted on a cloud platform in order to aggregate selected topics with messages from devices and compose dashboards updated in real-time, allowing final users to interact with the deployed solutions and automate rules. This article analyzes how the protocol stack needed for a test IoT solution could be implemented as a single local IoT Gateway on a Raspberry Pi.</span>
+                <span class="lang-es">En las soluciones de IoT, la arquitectura de comunicación entre los transductores y la interfaz de usuario (UI) es clave para tener una plataforma escalable y flexible. El protocolo utilizado de manera casi exclusiva para comunicar los componentes del extremo (edge) con las pasarelas IoT es MQTT, cuyos intermediarios (brokers) se alojan habitualmente en una plataforma en la nube para agregar tópicos con mensajes de dispositivos y componer tableros actualizados en tiempo real, permitiendo a los usuarios interactuar con las soluciones y automatizar reglas de control. Este artículo analiza cómo se podría implementar la pila de protocolos necesaria para una solución IoT de prueba como una pasarela IoT local única en una Raspberry Pi.</span>
             </p>
-            
-            <div class="diagram-container" onclick="openLightbox('images/tech_stack.png', 'IoT Platform Technology Stack')">
+
+            <h2>
+                <span class="lang-en">What is IoT?</span>
+                <span class="lang-es">¿Qué es el IoT?</span>
+            </h2>
+            <p>
+                <span class="lang-en">The Internet of Things, or IoT, refers to the billions of physical devices around the world that are now connected to the internet, collecting and sharing data. Thanks to cheap processors and wireless networks, it's possible to turn anything, from a pill to an aeroplane to a self-driving car into part of the IoT. This adds a level of digital intelligence to devices that would be otherwise dumb, enabling them to communicate real-time data without a human being involved, effectively merging the digital and physical worlds.</span>
+                <span class="lang-es">El Internet de las Cosas, o IoT (Internet of Things), se refiere a los miles de millones de dispositivos físicos en todo el mundo que ahora están conectados a Internet, recopilando y compartiendo datos. Gracias a procesadores baratos y redes inalámbricas, es posible convertir cualquier cosa, desde una pastilla hasta un avión o un coche autónomo, en parte del IoT. Esto añade un nivel de inteligencia digital a los dispositivos que de otro modo serían tontos, permitiéndoles comunicar datos en tiempo real sin la intervención de un ser humano, fusionando eficazmente el mundo digital y el físico.</span>
+            </p>
+            <p>
+                <span class="lang-en">Processors that are cheap and power-frugal enough to be all but disposable were required before it became cost-effective to connect up billions of devices. The adoption of RFID tags—low-power chips that can communicate wirelessly—solved some of this issue, along with the increasing availability of broadband internet and cellular and wireless networking. Kevin Ashton coined the phrase 'Internet of Things' in 1999, although it took at least another decade for the technology to catch up with the vision.</span>
+                <span class="lang-es">Se requirieron procesadores baratos y con un consumo de energía lo suficientemente bajo como para ser casi desechables antes de que fuera rentable conectar miles de millones de dispositivos. La adopción de etiquetas RFID (chips de baja potencia que pueden comunicarse de forma inalámbrica) resolvió parte de este problema, junto con la creciente disponibilidad de Internet de banda ancha y redes celulares e inalámbricas. Kevin Ashton acuñó la frase 'Internet de las Cosas' en 1999, aunque hicieron falta al menos otra década para que la tecnología alcanzara la visión propuesta.</span>
+            </p>
+
+            <h2>
+                <span class="lang-en">IoT Architecture</span>
+                <span class="lang-es">Arquitectura IoT</span>
+            </h2>
+            <p>
+                <span class="lang-en">A typical IoT solution is characterized by many devices—thus things—that may use some form of gateway to communicate through a network to a back-end server that is running an IoT platform. The roles of the devices, gateways, and cloud platform are well defined:</span>
+                <span class="lang-es">Una solución típica de IoT se caracteriza por muchos dispositivos (es decir, cosas) que pueden utilizar alguna forma de pasarela (gateway) para comunicarse a través de una red con un servidor back-end que ejecuta una plataforma IoT. Las funciones de los dispositivos, las pasarelas y la plataforma están bien definidas:</span>
+            </p>
+
+            <ul>
+                <li>
+                    <strong><span class="lang-en">Things (Sensors & Actuators)</span><span class="lang-es">Cosas (Sensores y Actuadores)</span>:</strong> 
+                    <span class="lang-en">Connected sensors are responsible for providing the data. Actuators, in close collaboration with the sensors, transform the data generated by smart objects into physical actions.</span>
+                    <span class="lang-es">Los sensores conectados son los responsables de proporcionar los datos. Los actuadores, en estrecha colaboración con los sensores, transforman los datos generados por los objetos inteligentes en acciones físicas reales.</span>
+                </li>
+                <li>
+                    <strong><span class="lang-en">Gateways</span><span class="lang-es">Pasarelas (Gateways)</span>:</strong> 
+                    <span class="lang-en">Gateways facilitate communication between sensors and the rest of the system by converting telemetry data into usable formats. They also select and filter data to minimize the volume of information forwarded.</span>
+                    <span class="lang-es">Las pasarelas facilitan la comunicación entre los sensores y el resto del sistema al convertir los datos de telemetría en formatos utilizables. También seleccionan y filtran los datos para minimizar el volumen de información reenviada.</span>
+                </li>
+                <li>
+                    <strong><span class="lang-en">IoT Platform (Cloud or Local Datacenter)</span><span class="lang-es">Plataforma IoT (Nube o Centro de Datos Local)</span>:</strong> 
+                    <span class="lang-en">Designed to store, process, and analyze massive volumes of data for deeper insights using powerful analytics engines and machine learning.</span>
+                    <span class="lang-es">Diseñada para almacenar, procesar y analizar volúmenes masivos de datos para obtener información más profunda utilizando motores de análisis potentes y aprendizaje automático.</span>
+                </li>
+                <li>
+                    <strong><span class="lang-en">Applications</span><span class="lang-es">Aplicaciones de Consumidor</span>:</strong> 
+                    <span class="lang-en">Providing user interfaces (mobile or web) to allow status checks, command issuances, and rule updates.</span>
+                    <span class="lang-es">Proporcionan interfaces de usuario (móviles o web) para permitir comprobaciones de estado, emisión de comandos y actualizaciones de reglas.</span>
+                </li>
+            </ul>
+
+            <h2>
+                <span class="lang-en">IoT Platform Technology Stack</span>
+                <span class="lang-es">Pila Tecnológica de la Plataforma IoT</span>
+            </h2>
+            <p>
+                <span class="lang-en">In the four typical layers of the IoT stack (things, connectivity, core IoT features, and applications/analytics), the IoT platform coordinates endpoints. It is often deployed on-premises using a gateway to map local networks (like Wi-Fi, Ethernet, or LoRa) to brokers.</span>
+                <span class="lang-es">En las cuatro capas típicas de la pila de IoT (cosas, conectividad, funciones básicas de IoT y aplicaciones/análisis), la plataforma coordina los terminales. A menudo se implementa localmente mediante una pasarela para mapear redes locales (como Wi-Fi, Ethernet o LoRa) hacia los intermediarios.</span>
+            </p>
+
+            <div class="diagram-container" onclick="openLightbox('images/tech_stack.png', 'IoT Platform Technology Stack / Pila Tecnológica de la Plataforma IoT')">
                 <img class="diagram-img" src="images/tech_stack.png" alt="IoT Platform Technology Stack">
                 <div class="diagram-caption">
                     <span class="lang-en">Figure 2: Technology Stack of the PoC, showing physical layers up to visualization.</span>
-                    <span class="lang-es">Figura 2: Pila tecnológica de la PoC, mostrando las capas físicas hasta la visualización.</span>
+                    <span class="lang-es">Figura 2: Pila tecnológica de la PoC, mostrando desde las capas físicas hasta la visualización.</span>
                 </div>
             </div>
 
+            <h2>
+                <span class="lang-en">IoT Hardware Platform</span>
+                <span class="lang-es">Plataforma de Hardware IoT</span>
+            </h2>
+            <p>
+                <span class="lang-en">For this specific solution, two hardware platforms are used: the ESP8266 microcontroller for the end devices, and the Raspberry Pi SoC for the central communication gateway, rules engine, and user interface.</span>
+                <span class="lang-es">Para esta solución específica, se utilizan dos plataformas de hardware: el microcontrolador ESP8266 para los dispositivos finales, y el SoC Raspberry Pi para la pasarela de comunicación central, el motor de reglas y la interfaz de usuario.</span>
+            </p>
+
+            <h3>
+                <span class="lang-en">Espressif ESP8266 Boards</span>
+                <span class="lang-es">Placas Espressif ESP8266</span>
+            </h3>
+            <p>
+                <span class="lang-en">The ESP8266 is one of the most preferred chipsets for WiFi-based IoT devices. It is low-cost, low-power, and easy to program. The module features an integrated 32-bit Tensilica L106 RISC processor and can be programmed using the Arduino IDE in C++.</span>
+                <span class="lang-es">El ESP8266 es uno de los chipsets más preferidos para dispositivos IoT basados en WiFi. Es de bajo coste, bajo consumo y fácil de programar. El módulo cuenta con un procesador Tensilica L106 RISC de 32 bits integrado y se puede programar en C++ mediante el IDE de Arduino.</span>
+            </p>
+
+            <h3>
+                <span class="lang-en">The Raspberry Pi</span>
+                <span class="lang-es">La Raspberry Pi</span>
+            </h3>
+            <p>
+                <span class="lang-en">While the Raspberry Pi is a general-purpose single-board computer, it acts as a reliable local gateway, data hub, and rules engine. In this PoC, a Raspberry Pi Zero W with built-in Wi-Fi is deployed.</span>
+                <span class="lang-es">Aunque la Raspberry Pi es un ordenador de placa única de propósito general, actúa como una pasarela local fiable, un concentrador de datos y un motor de reglas. En esta PoC, se utiliza una Raspberry Pi Zero W con Wi-Fi integrado.</span>
+            </p>
+
+            <h2>
+                <span class="lang-en">MQTT Protocol</span>
+                <span class="lang-es">Protocolo MQTT</span>
+            </h2>
+            <p>
+                <span class="lang-en">MQTT (Message Queuing Telemetry Transport) is a lightweight messaging protocol designed for resource-constrained devices. It operates on a publish/subscribe model, ensuring minimal bandwidth usage, low overhead, and fast transmission in real time.</span>
+                <span class="lang-es">MQTT (Message Queuing Telemetry Transport) es un protocolo de mensajería ligero diseñado para dispositivos con recursos limitados. Funciona según un modelo de publicación/suscripción, lo que garantiza un uso mínimo del ancho de banda, una baja sobrecarga y una transmisión rápida en tiempo real.</span>
+            </p>
+            <p>
+                <span class="lang-en">Compared to HTTP, MQTT is far more efficient:</span>
+                <span class="lang-es">En comparación con HTTP, MQTT es mucho más eficiente:</span>
+            </p>
             <ul>
-                <li><strong><span class="lang-en">Devices</span><span class="lang-es">Dispositivos</span>:</strong> ESP8266 boards, DHT11 Temperature & Humidity, Red LED simulator.</li>
-                <li><strong><span class="lang-en">Connectivity</span><span class="lang-es">Conectividad</span>:</strong> WiFi local connection using the MQTT Publish/Subscribe protocol.</li>
-                <li><strong><span class="lang-en">Broker Gateway</span><span class="lang-es">Broker Gateway</span>:</strong> Mosquitto MQTT Server running on Raspbian.</li>
-                <li><strong><span class="lang-en">Rule Engine & Dashboard</span><span class="lang-es">Motor de Reglas y Dashboard</span>:</strong> Node-RED flow engine + Node-RED Dashboard UI plug-in.</li>
+                <li><strong><span class="lang-en">Faster</span><span class="lang-es">Más rápido</span>:</strong> <span class="lang-en">Smaller packets avoid the typical overhead of large HTTP headers.</span><span class="lang-es">Los paquetes pequeños evitan la sobrecarga habitual de las cabeceras HTTP grandes.</span></li>
+                <li><strong><span class="lang-en">Lower Overhead</span><span class="lang-es">Menor sobrecarga</span>:</strong> <span class="lang-en">Persistent TCP connections avoid repeatedly opening and closing connections.</span><span class="lang-es">La conexión TCP persistente evita abrir y cerrar conexiones repetidamente.</span></li>
+                <li><strong><span class="lang-en">Battery Saving</span><span class="lang-es">Ahorro de batería</span>:</strong> <span class="lang-en">Shorter transmission cycles lead to lower electrical current draws.</span><span class="lang-es">Ciclos de transmisión más cortos reducen el consumo eléctrico de corriente.</span></li>
             </ul>
 
-            <h2><span class="lang-en">Why MQTT over HTTP?</span><span class="lang-es">¿Por qué MQTT sobre HTTP?</span></h2>
+            <h2>
+                <span class="lang-en">General Solution Architecture</span>
+                <span class="lang-es">Arquitectura General de la Solución</span>
+            </h2>
             <p>
-                <span class="lang-en">Compared to HTTP, MQTT is vastly superior for resource-constrained edge computing. It stays online in a persistent TCP connection, uses very small packets (less overhead), and saves significant power for battery-operated devices. It represents a real-time data channel.</span>
-                <span class="lang-es">En comparación con HTTP, MQTT es muy superior para la computación en el borde con recursos limitados. Permanece en línea en una conexión TCP persistente, utiliza paquetes muy pequeños (menos sobrecarga) y ahorra energía significativa para dispositivos alimentados por batería. Representa un canal de datos en tiempo real.</span>
+                <span class="lang-en">The following diagram shows a general IoT solution simplified to a single device (ESP8266 NodeMCU) functioning both as a sensor and actuator. The local broker (Mosquitto), UI Dashboard, and Rules Engine (Node-RED) are deployed on the Raspberry Pi Zero W.</span>
+                <span class="lang-es">El siguiente diagrama muestra una solución general de IoT simplificada a un único dispositivo (ESP8266 NodeMCU) que funciona como sensor y actuador. El broker local (Mosquitto), el tablero UI y el motor de reglas (Node-RED) se despliegan en la Raspberry Pi Zero W.</span>
+            </p>
+
+            <div class="diagram-container" onclick="openLightbox('images/general_architecture.png', 'General Solution Deployment / Despliegue General de la Solución')">
+                <img class="diagram-img" src="images/general_architecture.png" alt="General Solution Architecture">
+                <div class="diagram-caption">
+                    <span class="lang-en">Figure 3: General deployment diagram illustrating the wireless connection between the NodeMCU node and the Raspberry Pi Gateway.</span>
+                    <span class="lang-es">Figura 3: Diagrama de despliegue general que ilustra la conexión inalámbrica entre el nodo NodeMCU y la pasarela Raspberry Pi.</span>
+                </div>
+            </div>
+
+            <h2>
+                <span class="lang-en">General Solution Description</span>
+                <span class="lang-es">Descripción General de la Solución</span>
+            </h2>
+            <p>
+                <span class="lang-en">The proposed solution emulates a home domotic control center. The ESP8266 node reads environmental readings and publishes them to the broker at regular intervals. Simultaneously, it listens to the control topic and activates/deactivates the red LED simulator accordingly. On the gateway side, Node-RED acts as a rules engine. For example, it evaluates the humidity topic and automatically switches on/off the humidifier status topic based on a set threshold.</span>
+                <span class="lang-es">La solución propuesta emula un centro de control domótico doméstico. El nodo ESP8266 lee las variables ambientales y las publica en el broker a intervalos regulares. Simultáneamente, escucha el tópico de control y activa/desactiva el simulador de LED rojo correspondiente. En el lado de la pasarela, Node-RED actúa como motor de reglas. Por ejemplo, evalúa el tópico de humedad y enciende/apaga automáticamente el tópico del estado del humidificador en función de un umbral establecido.</span>
+            </p>
+
+            <div class="diagram-container" onclick="openLightbox('images/nodered_humidifier_flow.png', 'Node-RED Humidifier Rule Flow / Flujo de Reglas de Humidificador Node-RED')">
+                <img class="diagram-img" src="images/nodered_humidifier_flow.png" alt="Node-RED Humidifier Flow">
+                <div class="diagram-caption">
+                    <span class="lang-en">Figure 4: Flow logic in Node-RED connecting the MQTT input, threshold evaluation function, and MQTT output nodes.</span>
+                    <span class="lang-es">Figura 4: Lógica de flujo en Node-RED que conecta el nodo de entrada MQTT, la función de evaluación de umbral y el nodo de salida MQTT.</span>
+                </div>
+            </div>
+
+            <div class="diagram-container" onclick="openLightbox('images/nodered_function_details.png', 'Node-RED Function Node Details / Detalles del Nodo Función Node-RED')">
+                <img class="diagram-img" src="images/nodered_function_details.png" alt="Node-RED Function Node Details">
+                <div class="diagram-caption">
+                    <span class="lang-en">Figure 5: Code inside the Node-RED function node checking if the humidity is less than the threshold.</span>
+                    <span class="lang-es">Figura 5: Código dentro del nodo de función Node-RED que comprueba si la humedad es inferior al umbral.</span>
+                </div>
+            </div>
+
+            <h2>
+                <span class="lang-en">Detailed Communication Description</span>
+                <span class="lang-es">Descripción Detallada de la Comunicación</span>
+            </h2>
+            <p>
+                <span class="lang-en">In this section, the wiring schematic and firmware deployment are detailed. Each endpoint requires adapting: the sensor connection pins, firmware routine for network connection (Wi-Fi or Ethernet library), and MQTT topics.</span>
+                <span class="lang-es">En esta sección se detallan el esquema de cableado y el despliegue del firmware. Cada terminal requiere adaptar: los pines de conexión del sensor, la rutina del firmware para la conexión a la red (biblioteca Wi-Fi o Ethernet) y los tópicos MQTT.</span>
+            </p>
+
+            <h3>
+                <span class="lang-en">Physical Connection of Sensor and Actuator</span>
+                <span class="lang-es">Conexión Física de Sensor y Actuador</span>
+            </h3>
+
+            <div class="diagram-container" onclick="openLightbox('images/dht_nodemcu_connection.png', 'NodeMCU and DHT Physical Connection / Conexión Física de NodeMCU y DHT')">
+                <img class="diagram-img" src="images/dht_nodemcu_connection.png" alt="Wiring Diagram">
+                <div class="diagram-caption">
+                    <span class="lang-en">Figure 6: Wiring diagram connecting DHT sensor and simulation LED to NodeMCU v3 ESP8266.</span>
+                    <span class="lang-es">Figura 6: Diagrama de cableado que conecta el sensor DHT y el LED de simulación a la placa NodeMCU v3 ESP8266.</span>
+                </div>
+            </div>
+
+            <table class="compare-table">
+                <thead>
+                    <tr>
+                        <th><span class="lang-en">DHT Pin</span><span class="lang-es">Pin de DHT</span></th>
+                        <th><span class="lang-en">NodeMCU ESP8266 Pin</span><span class="lang-es">Pin de NodeMCU ESP8266</span></th>
+                        <th><span class="lang-en">Role Description</span><span class="lang-es">Descripción de Función</span></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>VCC (+)</td>
+                        <td>3V3</td>
+                        <td><span class="lang-en">Power supply (3.3V voltage output from board regulator)</span><span class="lang-es">Alimentación (salida de voltaje de 3.3V regulada en placa)</span></td>
+                    </tr>
+                    <tr>
+                        <td>Signal</td>
+                        <td>GPIO14 / GPIO5</td>
+                        <td><span class="lang-en">Digital data signal pin</span><span class="lang-es">Pin de señal digital de datos</span></td>
+                    </tr>
+                    <tr>
+                        <td>GND</td>
+                        <td>GND</td>
+                        <td><span class="lang-en">Ground reference</span><span class="lang-es">Toma de tierra de referencia</span></td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h3>
+                <span class="lang-en">Testing Mosquitto Broker via Terminal</span>
+                <span class="lang-es">Probando el Broker Mosquitto vía Terminal</span>
+            </h3>
+            <p>
+                <span class="lang-en">To verify the broker, we can open an SSH terminal and subscribe to the test topic:</span>
+                <span class="lang-es">Para verificar el broker, podemos abrir un terminal SSH y suscribirnos al tópico de prueba:</span>
+            </p>
+            
+            <div class="code-container">
+                <div class="code-header">
+                    <span class="code-title">
+                        <span class="code-circle red"></span>
+                        <span class="code-circle yellow"></span>
+                        <span class="code-circle green"></span>
+                        Terminal (Subscribe)
+                    </span>
+                    <button class="btn-copy" onclick="copyCode(this)">Copy</button>
+                </div>
+                <pre class="code-pre"><code>mosquitto_sub -d -t hello_topic</code></pre>
+            </div>
+
+            <p>
+                <span class="lang-en">In a separate terminal, publish a test message:</span>
+                <span class="lang-es">En un terminal separado, publicamos un mensaje de prueba:</span>
+            </p>
+
+            <div class="code-container">
+                <div class="code-header">
+                    <span class="code-title">
+                        <span class="code-circle red"></span>
+                        <span class="code-circle yellow"></span>
+                        <span class="code-circle green"></span>
+                        Terminal (Publish)
+                    </span>
+                    <button class="btn-copy" onclick="copyCode(this)">Copy</button>
+                </div>
+                <pre class="code-pre"><code>mosquitto_pub -d -t hello_topic -m "hello from RaspberryPi"</code></pre>
+            </div>
+
+            <h3>
+                <span class="lang-en">Visualizing Topics in Node-RED</span>
+                <span class="lang-es">Visualización de Tópicos en Node-RED</span>
+            </h3>
+
+            <div class="diagram-container" onclick="openLightbox('images/nodered_dashboard_flow.png', 'Node-RED Dashboard Flow / Flujo del Tablero Node-RED')">
+                <img class="diagram-img" src="images/nodered_dashboard_flow.png" alt="Node-RED Dashboard Flow">
+                <div class="diagram-caption">
+                    <span class="lang-en">Figure 7: Flow configurations rendering gauges and switch indicators inside Node-RED.</span>
+                    <span class="lang-es">Figura 7: Configuración de flujos que renderizan indicadores analógicos e interruptores dentro de Node-RED.</span>
+                </div>
+            </div>
+
+            <div class="diagram-container" onclick="openLightbox('images/dashboard_pc.png', 'PC Browser Dashboard / Tablero en Navegador de PC')">
+                <img class="diagram-img" src="images/dashboard_pc.png" alt="PC Browser Dashboard">
+                <div class="diagram-caption">
+                    <span class="lang-en">Figure 8: Responsive web dashboard UI viewed inside a PC web browser.</span>
+                    <span class="lang-es">Figura 8: Interfaz gráfica responsiva del tablero vista en un navegador web de PC.</span>
+                </div>
+            </div>
+
+            <div class="diagram-container" onclick="openLightbox('images/dashboard_mobile.png', 'Smartphone Dashboard / Tablero en Smartphone')">
+                <img class="diagram-img" src="images/dashboard_mobile.png" alt="Smartphone Dashboard">
+                <div class="diagram-caption">
+                    <span class="lang-en">Figure 9: Responsive web dashboard UI viewed inside a smartphone.</span>
+                    <span class="lang-es">Figura 9: Interfaz gráfica responsiva del tablero vista en un smartphone.</span>
+                </div>
+            </div>
+
+            <h2>
+                <span class="lang-en">Conclusions and Further Improvement</span>
+                <span class="lang-es">Conclusiones y Futuras Mejoras</span>
+            </h2>
+            <p>
+                <span class="lang-en">The PoC successfully demonstrates the end-to-end integration of an IoT system—from sensor transduction up to user visualization—without delegating tasks to prebuilt cloud systems. For commercial scaling, using redundant cloud resources for brokers and database logging is recommended. Moving the breadboard circuit onto a customized PCB would minimize footprints and enhance power efficiency, allowing battery configurations that publish battery levels for preventive maintenance.</span>
+                <span class="lang-es">La PoC demuestra con éxito la integración de un sistema IoT de extremo a extremo, desde la transducción del sensor hasta la visualización del usuario, sin delegar tareas a sistemas prefabricados en la nube. Para la comercialización a gran escala, se recomienda el uso de recursos redundantes en la nube para brokers e históricos de bases de datos. Trasladar el prototipo de placa de desarrollo a una PCB personalizada minimizaría el tamaño y mejoraría la eficiencia energética, habilitando el uso de baterías que notifiquen su nivel de carga para mantenimiento preventivo.</span>
             </p>
         </div>
-
-        <!-- TAB 4: HARDWARE CONFIG -->
         <div class="content-panel" id="panel-hardware">
             <h1 class="lang-en">Hardware Configuration & Connections</h1>
             <h1 class="lang-es">Configuración de Hardware y Conexiones</h1>
