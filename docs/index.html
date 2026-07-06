@@ -1,0 +1,800 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Project Documentation | IoT Gateway on a Raspberry Pi</title>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;700&family=Inter:wght@300;400;500;600;700;800&family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- Custom Styles -->
+    <link rel="stylesheet" href="style.css">
+</head>
+<body data-lang="en" data-theme="dark">
+
+    <!-- Sidebar Navigation -->
+    <div class="sidebar">
+        <div class="sidebar-brand">
+            <div class="brand-icon">IoT</div>
+            <div class="brand-name">Gateway Zero</div>
+        </div>
+        
+        <nav class="sidebar-nav">
+            <p class="nav-title">
+                <span class="lang-en">Documentation</span>
+                <span class="lang-es">Documentación</span>
+            </p>
+            <ul>
+                <li class="nav-item">
+                    <a class="nav-link active" onclick="switchTab('overview')">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="9"></rect><rect x="14" y="3" width="7" height="5"></rect><rect x="14" y="12" width="7" height="9"></rect><rect x="3" y="16" width="7" height="5"></rect></svg>
+                        <span class="nav-text">
+                            <span class="lang-en">Dashboard Hub</span>
+                            <span class="lang-es">Panel de Control</span>
+                        </span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" onclick="switchTab('thesis')">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
+                        <span class="nav-text">
+                            <span class="lang-en">Technical Thesis (ES)</span>
+                            <span class="lang-es">Trabajo Técnico (ES)</span>
+                        </span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" onclick="switchTab('blog')">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>
+                        <span class="nav-text">
+                            <span class="lang-en">Blog Article (EN)</span>
+                            <span class="lang-es">Artículo Blog (EN)</span>
+                        </span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" onclick="switchTab('hardware')">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="8" rx="2" ry="2"></rect><rect x="2" y="14" width="20" height="8" rx="2" ry="2"></rect><line x1="6" y1="6" x2="6.01" y2="6"></line><line x1="6" y1="18" x2="6.01" y2="18"></line></svg>
+                        <span class="nav-text">
+                            <span class="lang-en">Hardware & Pinouts</span>
+                            <span class="lang-es">Hardware y Pinouts</span>
+                        </span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" onclick="switchTab('code')">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 18 22 12 16 6"></polyline><polyline points="8 6 2 12 8 18"></polyline></svg>
+                        <span class="nav-text">
+                            <span class="lang-en">Firmware Center</span>
+                            <span class="lang-es">Código de Placa</span>
+                        </span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" onclick="switchTab('nodered')">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="4" y1="9" x2="20" y2="9"></line><line x1="4" y1="15" x2="20" y2="15"></line><line x1="10" y1="3" x2="8" y2="21"></line><line x1="16" y1="3" x2="14" y2="21"></line></svg>
+                        <span class="nav-text">
+                            <span class="lang-en">Node-RED Flow</span>
+                            <span class="lang-es">Flujo de Node-RED</span>
+                        </span>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+        
+        <div class="sidebar-footer">
+            <span>&copy; 2026 J. E. Nicolau</span>
+            <span>v1.2</span>
+        </div>
+    </div>
+
+    <!-- Main Content Panel Area -->
+    <div class="main-content">
+        <!-- Top Sticky Header -->
+        <header class="top-header">
+            <div class="header-title-container">
+                <h1 style="font-size: 1.25rem; font-family: var(--font-display); margin-bottom: 0;">
+                    <span class="lang-en">Project Documentation Hub</span>
+                    <span class="lang-es">Centro de Documentación de Proyecto</span>
+                </h1>
+                <span class="header-tag">PoC</span>
+            </div>
+            
+            <div class="controls-group">
+                <!-- Language Toggle -->
+                <div class="lang-switch-container" onclick="toggleLanguage()" title="Switch Language / Cambiar Idioma">
+                    <div class="lang-slider"></div>
+                    <span class="lang-option active" id="lang-en-label">EN</span>
+                    <span class="lang-option" id="lang-es-label">ES</span>
+                </div>
+                
+                <!-- Theme Toggle -->
+                <button class="btn-control" onclick="toggleTheme()" title="Toggle Light/Dark Theme">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" id="theme-icon-dark"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" id="theme-icon-light" style="display: none;"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
+                </button>
+            </div>
+        </header>
+
+        <!-- Dynamic Tab Navigation Bar -->
+        <div class="tab-bar-container">
+            <ul class="tab-bar">
+                <li class="tab-item active" onclick="switchTab('overview')" id="tab-overview">
+                    <span class="lang-en">Overview</span>
+                    <span class="lang-es">Resumen</span>
+                </li>
+                <li class="tab-item" onclick="switchTab('thesis')" id="tab-thesis">
+                    <span class="lang-en">Academic Report (ES)</span>
+                    <span class="lang-es">Informe Académico (ES)</span>
+                </li>
+                <li class="tab-item" onclick="switchTab('blog')" id="tab-blog">
+                    <span class="lang-en">Blog Post (EN)</span>
+                    <span class="lang-es">Artículo de Blog (EN)</span>
+                </li>
+                <li class="tab-item" onclick="switchTab('hardware')" id="tab-hardware">
+                    <span class="lang-en">Hardware Config</span>
+                    <span class="lang-es">Configuración HW</span>
+                </li>
+                <li class="tab-item" onclick="switchTab('code')" id="tab-code">
+                    <span class="lang-en">Source Code</span>
+                    <span class="lang-es">Código Fuente</span>
+                </li>
+                <li class="tab-item" onclick="switchTab('nodered')" id="tab-nodered">
+                    <span class="lang-en">Node-RED Flows</span>
+                    <span class="lang-es">Flujos Node-RED</span>
+                </li>
+            </ul>
+        </div>
+
+        <!-- TAB 1: OVERVIEW HUB -->
+        <div class="content-panel active" id="panel-overview">
+            <h1 class="lang-en">IoT Gateway on a Raspberry Pi</h1>
+            <h1 class="lang-es">Gateway de IoT en una Raspberry Pi</h1>
+            <p class="lead-text">
+                <span class="lang-en">Welcome to the complete documentation hub. This project analyzes and demonstrates the protocol stack needed to implement a local, secure, and responsive domotic central (IoT Gateway) utilizing a Raspberry Pi Zero W and ESP8266 Microcontrollers.</span>
+                <span class="lang-es">Bienvenido al centro de documentación completo. Este proyecto analiza y demuestra la pila de protocolos necesarios para implementar una central domótica local, segura y responsiva (Gateway IoT) utilizando una Raspberry Pi Zero W y microcontroladores ESP8266.</span>
+            </p>
+
+            <div class="overview-grid">
+                <div class="glass-card">
+                    <div class="card-icon">⚡</div>
+                    <div class="card-title">
+                        <span class="lang-en">MQTT Architecture</span>
+                        <span class="lang-es">Arquitectura MQTT</span>
+                    </div>
+                    <div class="card-description">
+                        <span class="lang-en">Uses lightweight Publish/Subscribe messaging protocol to broker real-time data packets from sensors to actuators.</span>
+                        <span class="lang-es">Utiliza el protocolo de mensajería ligero Publish/Subscribe para distribuir paquetes de datos en tiempo real de sensores a actuadores.</span>
+                    </div>
+                </div>
+                <div class="glass-card">
+                    <div class="card-icon">🍓</div>
+                    <div class="card-title">
+                        <span class="lang-en">Raspberry Pi Zero W</span>
+                        <span class="lang-es">Raspberry Pi Zero W</span>
+                    </div>
+                    <div class="card-description">
+                        <span class="lang-en">Serves as the local hardware gateway, running a Mosquitto MQTT Broker, Node-RED engine, and responsive dashboard.</span>
+                        <span class="lang-es">Funciona como el gateway de hardware local, ejecutando el Broker Mosquitto MQTT, el motor Node-RED y el panel responsivo.</span>
+                    </div>
+                </div>
+                <div class="glass-card">
+                    <div class="card-icon">🔌</div>
+                    <div class="card-title">
+                        <span class="lang-en">Transducers & Actuators</span>
+                        <span class="lang-es">Transductores y Actuadores</span>
+                    </div>
+                    <div class="card-description">
+                        <span class="lang-en">Integrates DHT11/DHT22 temperature and humidity sensors, photoelectric LDR sensors, and high-voltage Songle Relays.</span>
+                        <span class="lang-es">Integra sensores de temperatura y humedad DHT11/DHT22, sensores LDR fotoeléctricos y relés Songle de alta tensión.</span>
+                    </div>
+                </div>
+            </div>
+
+            <h2>
+                <span class="lang-en">General Solution Schematic</span>
+                <span class="lang-es">Esquema General de la Solución</span>
+            </h2>
+            <p>
+                <span class="lang-en">Click on the diagram below to expand the complete structural architecture showing both wired Ethernet connections (Arduino Uno + Ethernet shield) and wireless nodes (NodeMCU ESP8266) feeding into the Raspberry Pi Gateway.</span>
+                <span class="lang-es">Haga clic en el siguiente diagrama para expandir la arquitectura estructural completa que muestra las conexiones cableadas por Ethernet (Arduino Uno + escudo Ethernet) y los nodos inalámbricos (NodeMCU ESP8266) enviando datos al Gateway Raspberry Pi.</span>
+            </p>
+            
+            <div class="diagram-container" onclick="openLightbox('images/general_architecture.png', 'General System Architecture Diagram')">
+                <img class="diagram-img" src="images/general_architecture.png" alt="General System Architecture Diagram">
+                <div class="diagram-caption">
+                    <span class="lang-en">Figure 1: General deployment diagram illustrating Wi-Fi / Ethernet nodes and the gateway.</span>
+                    <span class="lang-es">Figura 1: Diagrama de despliegue general que ilustra los nodos Wi-Fi / Ethernet y el gateway.</span>
+                </div>
+            </div>
+
+            <h2>
+                <span class="lang-en">Comparative Overview: DHT11 vs. DHT22 Sensors</span>
+                <span class="lang-es">Resumen Comparativo: Sensores DHT11 vs. DHT22</span>
+            </h2>
+            <table class="compare-table">
+                <thead>
+                    <tr>
+                        <th><span class="lang-en">Specification</span><span class="lang-es">Especificación</span></th>
+                        <th>DHT11</th>
+                        <th>DHT22 (AM2302)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong><span class="lang-en">Temperature Range</span><span class="lang-es">Rango de Temperatura</span></strong></td>
+                        <td>0 to 50 ºC</td>
+                        <td>-40 to 80 ºC</td>
+                    </tr>
+                    <tr>
+                        <td><strong><span class="lang-en">Humidity Range</span><span class="lang-es">Rango de Humedad</span></strong></td>
+                        <td>20 to 90% RH</td>
+                        <td>0 to 100% RH</td>
+                    </tr>
+                    <tr>
+                        <td><strong><span class="lang-en">Accuracy</span><span class="lang-es">Precisión</span></strong></td>
+                        <td>&plusmn;2 ºC / &plusmn;5%</td>
+                        <td>&plusmn;0.5 ºC / &plusmn;2%</td>
+                    </tr>
+                    <tr>
+                        <td><strong><span class="lang-en">Sampling Interval</span><span class="lang-es">Intervalo de Lectura</span></strong></td>
+                        <td>1 s</td>
+                        <td>2 s (lower power consumption)</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- TAB 2: TECHNICAL THESIS (TFI) -->
+        <div class="content-panel" id="panel-thesis">
+            <h1 class="lang-en">Trabajo Final Integrador: Domotic Control Central</h1>
+            <h1 class="lang-es">Trabajo Final Integrador: Central de Control Domótico</h1>
+            <p class="lead-text">
+                <span class="lang-en">Academic thesis submitted by Jorge Enrique Nicolau describing a home automation central focused on lighting control and presence simulation.</span>
+                <span class="lang-es">Tesis académica presentada por Jorge Enrique Nicolau que describe una central de automatización del hogar enfocada en el control de iluminación y simulación de presencia.</span>
+            </p>
+
+            <h2>1. <span class="lang-en">Objective of the Solution</span><span class="lang-es">Objetivo de la Solución</span></h2>
+            <p>
+                <span class="lang-en">The main objective is to describe a domestic electronic control system, its hardware/software components, communication protocols, and visual representation. The platform features both mobile and web interfaces allowing users to monitor ambient parameters, switch actuators manually, set automated routines, and execute presence simulation to improve home security.</span>
+                <span class="lang-es">El objetivo principal es describir una solución electrónica de uso doméstico, sus componentes hardware y software, protocolos de comunicación e interfaz visual. La plataforma cuenta con interfaces móviles y web que permiten al usuario monitorear parámetros ambientales, operar actuadores manualmente, programar rutinas automatizadas y ejecutar una simulación de presencia para mejorar la seguridad del hogar.</span>
+            </p>
+
+            <h2>2. <span class="lang-en">Functional Description</span><span class="lang-es">Descripción Funcional</span></h2>
+            <p>
+                <span class="lang-en">Wired and wireless transceiver nodes communicate with a central coordinator. Wired nodes rely on Arduino Uno coupled with an Ethernet shield, connected via physical LAN wiring. Wireless nodes utilize NodeMCU boards, communicating over local Wi-Fi.</span>
+                <span class="lang-es">Nodos transceptores cableados e inalámbricos se comunican con un coordinador central. Los nodos cableados utilizan placas Arduino Uno junto con un protector Ethernet, conectados por cable LAN. Los nodos inalámbricos utilizan placas NodeMCU, comunicándose a través de la red Wi-Fi local.</span>
+            </p>
+            <div class="callout-box">
+                <p>
+                    <strong><span class="lang-en">Actuators:</span><span class="lang-es">Actuadores:</span></strong>
+                    <span class="lang-en"> Relays read status topics regularly and toggle active loads (e.g. lamps, heaters). High voltage isolations are done via optocouplers.</span>
+                    <span class="lang-es"> Los relés leen los tópicos de estado con regularidad y alternan cargas activas (ej. lámparas, calentadores). Las aislaciones de alta tensión se realizan mediante optoacopladores.</span>
+                </p>
+            </div>
+            <div class="callout-box warning">
+                <p>
+                    <strong><span class="lang-en">Sensors:</span><span class="lang-es">Sensors:</span></strong>
+                    <span class="lang-en"> Photoelectric LDR modules analyze ambient light. Temperature and humidity values are read from DHT22 sensors and published to the local broker.</span>
+                    <span class="lang-es"> Los módulos LDR fotoeléctricos analizan la luz ambiental. Los valores de temperatura y humedad se leen desde sensores DHT22 y se publican en el broker local.</span>
+                </p>
+            </div>
+
+            <h2>3. <span class="lang-en">Gateway and Rule Engine Integration</span><span class="lang-es">Integración de Gateway y Motor de Reglas</span></h2>
+            <p>
+                <span class="lang-en">The gateway consists of a Raspberry Pi Zero W hosting a Mosquitto MQTT broker and a Node-RED engine. Node-RED maps topics dynamically and links sensors directly to actuators. For instance, when humidity readings drop below a threshold, the engine publishes an 'on' message to the humidifier topic automatically.</span>
+                <span class="lang-es">El gateway consta de una Raspberry Pi Zero W que aloja un broker Mosquitto MQTT y un motor Node-RED. Node-RED mapea tópicos dinámicamente y vincula sensores directamente a actuadores. Por ejemplo, cuando las lecturas de humedad caen por debajo de un umbral, el motor publica automáticamente un mensaje 'on' en el tópico del humidificador.</span>
+            </p>
+        </div>
+
+        <!-- TAB 3: BLOG ARTICLE -->
+        <div class="content-panel" id="panel-blog">
+            <h1>IoT Gateway on a Pi (Blog Article)</h1>
+            <p class="lead-text">
+                <span class="lang-en">Detailed article focusing on implementing the protocol stack on a Raspberry Pi Zero W, deploying Node-RED dashboard UI, and ESP8266 MQTT client coding.</span>
+                <span class="lang-es">Artículo detallado enfocado en implementar la pila de protocolos en una Raspberry Pi Zero W, desplegar la UI de dashboard Node-RED y programar el cliente MQTT de ESP8266.</span>
+            </p>
+
+            <h2><span class="lang-en">Technology Stack</span><span class="lang-es">Pila Tecnológica</span></h2>
+            <p>
+                <span class="lang-en">The standard IoT layers are implemented fully on-premises:</span>
+                <span class="lang-es">Las capas estándar de IoT están totalmente implementadas localmente:</span>
+            </p>
+            
+            <div class="diagram-container" onclick="openLightbox('images/tech_stack.png', 'IoT Platform Technology Stack')">
+                <img class="diagram-img" src="images/tech_stack.png" alt="IoT Platform Technology Stack">
+                <div class="diagram-caption">
+                    <span class="lang-en">Figure 2: Technology Stack of the PoC, showing physical layers up to visualization.</span>
+                    <span class="lang-es">Figura 2: Pila tecnológica de la PoC, mostrando las capas físicas hasta la visualización.</span>
+                </div>
+            </div>
+
+            <ul>
+                <li><strong><span class="lang-en">Devices</span><span class="lang-es">Dispositivos</span>:</strong> ESP8266 boards, DHT11 Temperature & Humidity, Red LED simulator.</li>
+                <li><strong><span class="lang-en">Connectivity</span><span class="lang-es">Conectividad</span>:</strong> WiFi local connection using the MQTT Publish/Subscribe protocol.</li>
+                <li><strong><span class="lang-en">Broker Gateway</span><span class="lang-es">Broker Gateway</span>:</strong> Mosquitto MQTT Server running on Raspbian.</li>
+                <li><strong><span class="lang-en">Rule Engine & Dashboard</span><span class="lang-es">Motor de Reglas y Dashboard</span>:</strong> Node-RED flow engine + Node-RED Dashboard UI plug-in.</li>
+            </ul>
+
+            <h2><span class="lang-en">Why MQTT over HTTP?</span><span class="lang-es">¿Por qué MQTT sobre HTTP?</span></h2>
+            <p>
+                <span class="lang-en">Compared to HTTP, MQTT is vastly superior for resource-constrained edge computing. It stays online in a persistent TCP connection, uses very small packets (less overhead), and saves significant power for battery-operated devices. It represents a real-time data channel.</span>
+                <span class="lang-es">En comparación con HTTP, MQTT es muy superior para la computación en el borde con recursos limitados. Permanece en línea en una conexión TCP persistente, utiliza paquetes muy pequeños (menos sobrecarga) y ahorra energía significativa para dispositivos alimentados por batería. Representa un canal de datos en tiempo real.</span>
+            </p>
+        </div>
+
+        <!-- TAB 4: HARDWARE CONFIG -->
+        <div class="content-panel" id="panel-hardware">
+            <h1 class="lang-en">Hardware Configuration & Connections</h1>
+            <h1 class="lang-es">Configuración de Hardware y Conexiones</h1>
+            <p class="lead-text">
+                <span class="lang-en">This section details how to physically wire the sensors to the NodeMCU ESP8266 board.</span>
+                <span class="lang-es">Esta sección detalla cómo cablear físicamente los sensores a la placa NodeMCU ESP8266.</span>
+            </p>
+
+            <h2>
+                <span class="lang-en">NodeMCU Wiring with DHT22</span>
+                <span class="lang-es">Conexionado de NodeMCU con DHT22</span>
+            </h2>
+            <div class="diagram-container" onclick="openLightbox('images/dht_nodemcu_connection.png', 'DHT22 connection schematic to NodeMCU')">
+                <img class="diagram-img" src="images/dht_nodemcu_connection.png" alt="DHT22 NodeMCU Wiring">
+                <div class="diagram-caption">
+                    <span class="lang-en">Figure 3: Schematic representation of DHT22 sensor and NodeMCU physical connections.</span>
+                    <span class="lang-es">Figura 3: Representación esquemática del sensor DHT22 y las conexiones físicas del NodeMCU.</span>
+                </div>
+            </div>
+
+            <h2>
+                <span class="lang-en">Physical Breadboard Layout (DHT11 & LED)</span>
+                <span class="lang-es">Disposición Física en Protoboard (DHT11 y LED)</span>
+            </h2>
+            <div class="diagram-container" onclick="openLightbox('images/dht_physical_photo.jpeg', 'DHT11 Physical Breadboard Photo')">
+                <img class="diagram-img" src="images/dht_physical_photo.jpeg" alt="Physical Prototype Layout">
+                <div class="diagram-caption">
+                    <span class="lang-en">Figure 4: Prototype breadboard layout showing NodeMCU, DHT sensor and wiring.</span>
+                    <span class="lang-es">Figura 4: Disposición del prototipo en protoboard que muestra el NodeMCU, el sensor DHT y el cableado.</span>
+                </div>
+            </div>
+
+            <h2>
+                <span class="lang-en">Pin Correlation Mapping</span>
+                <span class="lang-es">Mapeo de Correlación de Pines</span>
+            </h2>
+            <table class="compare-table">
+                <thead>
+                    <tr>
+                        <th>DHT22 Pin</th>
+                        <th>NodeMCU Pin</th>
+                        <th>Description</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>VDD (1)</td>
+                        <td>3V3</td>
+                        <td>Voltage regulated power supply (3.3V)</td>
+                    </tr>
+                    <tr>
+                        <td>DATA (2)</td>
+                        <td>GPIO17 (or GPIO14 in DHT11 sketch)</td>
+                        <td>Digital input channel for telemetry signals</td>
+                    </tr>
+                    <tr>
+                        <td>GND (4)</td>
+                        <td>GND</td>
+                        <td>Ground reference</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- TAB 5: SOURCE CODE -->
+        <div class="content-panel" id="panel-code">
+            <h1 class="lang-en">ESP8266 Arduino Source Code</h1>
+            <h1 class="lang-es">Código Fuente de Arduino ESP8266</h1>
+            <p class="lead-text">
+                <span class="lang-en">Browse the firmwares loaded on the microcontroller boards. Use the selectors below to switch between the DHT11 PoC and the DHT22 Academic sketch.</span>
+                <span class="lang-es">Explore los firmwares cargados en las placas de microcontroladores. Utilice los selectores a continuación para alternar entre la PoC de DHT11 y el boceto académico de DHT22.</span>
+            </p>
+
+            <!-- Code Selector Tabs -->
+            <div class="code-selector-bar">
+                <span class="code-sel-tab active" onclick="switchCodeBlock('poc')" id="code-tab-poc">iotdevice.ino (DHT11 PoC)</span>
+                <span class="code-sel-tab" onclick="switchCodeBlock('thesis')" id="code-tab-thesis">_01.temp_sensor_01.ino (DHT22 Thesis)</span>
+            </div>
+
+            <!-- Code Block 1: PoC Code -->
+            <div class="code-container code-block-viewer active" id="code-block-poc">
+                <div class="code-header">
+                    <div class="code-title">
+                        <span class="code-circle red"></span>
+                        <span class="code-circle yellow"></span>
+                        <span class="code-circle green"></span>
+                        <span>iotdevice.ino (DHT11 PoC)</span>
+                    </div>
+                    <button class="btn-copy" onclick="copyCode('code-content-poc')">Copy</button>
+                </div>
+                <pre class="code-pre"><code id="code-content-poc"><span class="c-comment">/**
+ * ESP8266 MCU routine for DHT11 reading and MQTT writing
+ */</span>
+<span class="c-directive">#include</span> <span class="c-string">&lt;SDHT.h&gt;</span>
+<span class="c-directive">#include</span> <span class="c-string">&lt;PubSubClient.h&gt;</span>
+<span class="c-directive">#include</span> <span class="c-string">&lt;ESP8266WiFi.h&gt;</span>
+
+<span class="c-keyword">const char*</span> IOTGATEWAY = <span class="c-string">"nn.nn.nn.nn"</span>; <span class="c-comment">// Gateway IP</span>
+<span class="c-keyword">const char*</span> WIFISSID = <span class="c-string">"********"</span>; 
+<span class="c-keyword">const char*</span> WIFIPASS = <span class="c-string">"********"</span>; 
+
+<span class="c-keyword">const char*</span> TOPICTEMP = <span class="c-string">"/casa/temperatura"</span>;
+<span class="c-keyword">const char*</span> TOPICHUMI = <span class="c-string">"/casa/humedad"</span>;
+<span class="c-keyword">const char*</span> TOPICCTRL = <span class="c-string">"/casa/humidificador"</span>;
+<span class="c-keyword">const char*</span> TOPICTEST = <span class="c-string">"hello_topic"</span>;
+
+<span class="c-directive">#define</span> DHTPIN 14     
+<span class="c-directive">#define</span> LEDPIN 13     
+<span class="c-directive">#define</span> DHTTYPE DHT11  
+<span class="c-directive">#define</span> REPORT_INTERVAL 1
+<span class="c-directive">#define</span> SERIALBPS 9600 
+
+SDHT dht;
+String clientName;
+WiFiClient wifiClient;
+
+<span class="c-type">void</span> <span class="c-func">callback</span>(<span class="c-keyword">char*</span> topic, <span class="c-keyword">byte*</span> payload, <span class="c-keyword">unsigned int</span> length) {
+    Serial.print(<span class="c-string">">> Message arrived: "</span>);
+    String message;
+    <span class="c-keyword">for</span> (<span class="c-keyword">int</span> i = 0; i &lt; length; i++) {
+        message = message + (<span class="c-keyword">char</span>)payload[i];
+    }
+    Serial.print(message);
+    <span class="c-keyword">if</span> (message == <span class="c-string">"on"</span>) <span class="c-func">digitalWrite</span>(LEDPIN, HIGH);
+    <span class="c-keyword">if</span> (message == <span class="c-string">"off"</span>) <span class="c-func">digitalWrite</span>(LEDPIN, LOW);
+}
+
+PubSubClient <span class="c-func">client</span>(IOTGATEWAY, 1883, callback, wifiClient);
+
+<span class="c-type">void</span> <span class="c-func">setup</span>() {
+    Serial.<span class="c-func">begin</span>(SERIALBPS);
+    <span class="c-func">pinMode</span>(LEDPIN, OUTPUT);
+    WiFi.<span class="c-func">begin</span>(WIFISSID, WIFIPASS);
+    <span class="c-keyword">while</span> (WiFi.<span class="c-func">status</span>() != WL_CONNECTED) {
+        <span class="c-func">delay</span>(500);
+    }
+    clientName += <span class="c-string">"esp8266-"</span>;
+    <span class="c-keyword">if</span> (client.<span class="c-func">connect</span>((<span class="c-keyword">char*</span>)clientName.c_str())) {
+        client.<span class="c-func">subscribe</span>(TOPICCTRL);
+    }
+}
+
+<span class="c-type">void</span> <span class="c-func">loop</span>() {
+    client.<span class="c-func">loop</span>();
+    <span class="c-keyword">if</span> (dht.<span class="c-func">read</span>(DHTTYPE, DHTPIN)) {
+        <span class="c-keyword">double</span> temp = dht.celsius / 10.0;
+        <span class="c-keyword">double</span> humi = dht.humidity / 10.0;
+        client.<span class="c-func">publish</span>(TOPICHUMI, String(humi, 1).c_str());
+        client.<span class="c-func">publish</span>(TOPICTEMP, String(temp, 1).c_str());
+    }
+    <span class="c-func">delay</span>(REPORT_INTERVAL * 1000);
+}</code></pre>
+            </div>
+
+            <!-- Code Block 2: Thesis Code -->
+            <div class="code-container code-block-viewer" id="code-block-thesis">
+                <div class="code-header">
+                    <div class="code-title">
+                        <span class="code-circle red"></span>
+                        <span class="code-circle yellow"></span>
+                        <span class="code-circle green"></span>
+                        <span>_01.temp_sensor_01.ino (DHT22 Thesis Code)</span>
+                    </div>
+                    <button class="btn-copy" onclick="copyCode('code-content-thesis')">Copy</button>
+                </div>
+                <pre class="code-pre"><code id="code-content-thesis"><span class="c-comment">// Rutina MCU para ESP8266, lectura DHT22 y escritura con MQTT</span>
+
+<span class="c-directive">#include</span> <span class="c-string">"DHT.h"</span>
+<span class="c-directive">#include</span> <span class="c-string">&lt;PubSubClient.h&gt;</span>
+<span class="c-directive">#include</span> <span class="c-string">&lt;ESP8266WiFi.h&gt;</span>
+
+<span class="c-keyword">const char*</span> ssid = <span class="c-string">"********"</span>; 
+<span class="c-keyword">const char*</span> password = <span class="c-string">"********"</span>; 
+
+<span class="c-keyword">char*</span> topicTemp = <span class="c-string">"/casa/temperatura"</span>;
+<span class="c-keyword">char*</span> topicHum = <span class="c-string">"/casa/humedad"</span>;
+<span class="c-keyword">char*</span> server = <span class="c-string">"XX.XX.XX.XX"</span>; <span class="c-comment">// Server MQTT (Raspberry Pi Zero W IP)</span>
+<span class="c-keyword">char*</span> hellotopic = <span class="c-string">"hello_topic"</span>; 
+
+<span class="c-directive">#define</span> DHTPIN 17     
+<span class="c-directive">#define</span> DHTTYPE DHT22   
+<span class="c-directive">#define</span> REPORT_INTERVAL 30 
+
+String clientName;
+DHT <span class="c-func">dht</span>(DHTPIN, DHTTYPE, 15);
+WiFiClient wifiClient;
+PubSubClient <span class="c-func">client</span>(server, 1883, callback, wifiClient);
+
+<span class="c-keyword">float</span> oldH;
+<span class="c-keyword">float</span> oldT;
+
+<span class="c-type">void</span> <span class="c-func">setup</span>() {
+  Serial.<span class="c-func">begin</span>(38400);
+  WiFi.<span class="c-func">begin</span>(ssid, password);
+  <span class="c-keyword">while</span> (WiFi.<span class="c-func">status</span>() != WL_CONNECTED) {
+    <span class="c-func">delay</span>(500);
+  }
+  
+  clientName += <span class="c-string">"esp8266-"</span>;
+  <span class="c-keyword">if</span> (client.<span class="c-func">connect</span>((<span class="c-keyword">char*</span>) clientName.c_str())) {
+    client.<span class="c-func">publish</span>(hellotopic, <span class="c-string">"hello from ESP8266"</span>);
+  }
+  dht.<span class="c-func">begin</span>();
+  oldH = -1;
+  oldT = -1;
+}
+
+<span class="c-type">void</span> <span class="c-func">loop</span>() {
+  <span class="c-keyword">float</span> h = dht.<span class="c-func">readHumidity</span>();
+  <span class="c-keyword">float</span> t = dht.<span class="c-func">readTemperature</span>();
+
+  <span class="c-keyword">if</span> (<span class="c-func">isnan</span>(h) || <span class="c-func">isnan</span>(t)) {
+    Serial.<span class="c-func">println</span>(<span class="c-string">"¡Falla al leer del sensor DHT!"</span>);
+    <span class="c-keyword">return</span>;
+  }
+
+  <span class="c-keyword">if</span> (t != oldT || h != oldH ) {
+    <span class="c-func">sendTemperature</span>(String(h), String(t));
+    oldT = t;
+    oldH = h;
+  }
+  
+  <span class="c-keyword">int</span> cnt = REPORT_INTERVAL;
+  <span class="c-keyword">while</span> (cnt--) <span class="c-func">delay</span>(1000);
+}
+
+<span class="c-type">void</span> <span class="c-func">sendTemperature</span>(String plHum, String plTem) {
+  <span class="c-keyword">if</span> (client.<span class="c-func">connected</span>()) {
+    client.<span class="c-func">publish</span>(topicHum, (<span class="c-keyword">char*</span>) plHum.c_str());
+    client.<span class="c-func">publish</span>(topicTemp, (<span class="c-keyword">char*</span>) plTem.c_str());
+  }
+}
+
+<span class="c-type">void</span> <span class="c-func">callback</span>(<span class="c-keyword">char*</span> topic, <span class="c-keyword">byte*</span> payload, <span class="c-keyword">unsigned int</span> length) {}</code></pre>
+            </div>
+        </div>
+
+        <!-- TAB 6: NODE-RED FLOWS -->
+        <div class="content-panel" id="panel-nodered">
+            <h1 class="lang-en">Node-RED Flow Configurations</h1>
+            <h1 class="lang-es">Configuración de Flujos en Node-RED</h1>
+            <p class="lead-text">
+                <span class="lang-en">This section showcases how the automation loops are graphical linked.</span>
+                <span class="lang-es">Esta sección muestra cómo se vinculan gráficamente los lazos de automatización.</span>
+            </p>
+
+            <h2>
+                <span class="lang-en">Automated Rule: Humidifier Control Trigger</span>
+                <span class="lang-es">Regla Automatizada: Disparador de Humidificador</span>
+            </h2>
+            <p>
+                <span class="lang-en">To tie the DHT telemetry values to the Relay activator automatically, Node-RED utilizes a <strong>"network/mqtt in"</strong> node, passing payloads through a <strong>"function/function"</strong> node to check limits, ending at a <strong>"network/mqtt out"</strong> node.</span>
+                <span class="lang-es">Para vincular los valores de telemetría DHT al activador de Relé automáticamente, Node-RED utiliza un nodo <strong>"network/mqtt in"</strong>, pasando cargas a través de un nodo <strong>"function/function"</strong> para evaluar límites, terminando en un nodo <strong>"network/mqtt out"</strong>.</span>
+            </p>
+            <div class="diagram-container" onclick="openLightbox('images/nodered_humidifier_flow.png', 'Node-RED automation flow representation')">
+                <img class="diagram-img" src="images/nodered_humidifier_flow.png" alt="Node-RED Humidifier Rule Flow">
+                <div class="diagram-caption">
+                    <span class="lang-en">Figure 5: Node-RED flow connecting input MQTT topic to function and output topic.</span>
+                    <span class="lang-es">Figura 5: Flujo Node-RED que conecta el tópico MQTT de entrada a la función y el tópico de salida.</span>
+                </div>
+            </div>
+
+            <h2>
+                <span class="lang-en">Condition Script Logic</span>
+                <span class="lang-es">Lógica de la Función Condicional</span>
+            </h2>
+            <div class="diagram-container" onclick="openLightbox('images/nodered_function_details.png', 'Node-RED function script node screenshot')">
+                <img class="diagram-img" src="images/nodered_function_details.png" alt="Condition Function block details">
+                <div class="diagram-caption">
+                    <span class="lang-en">Figure 6: Visual parameters of the JS script block inside Node-RED.</span>
+                    <span class="lang-es">Figura 6: Parámetros visuales del bloque de script JS dentro de Node-RED.</span>
+                </div>
+            </div>
+
+            <h2>
+                <span class="lang-en">Dashboard Graphical Interface Flow</span>
+                <span class="lang-es">Flujo del Dashboard de Interfaz Gráfica</span>
+            </h2>
+            <p>
+                <span class="lang-en">The layout flow maps incoming values to dial gauges and switch triggers dynamically.</span>
+                <span class="lang-es">El flujo de diseño asigna dinámicamente los valores entrantes a indicadores de cuadrante y selectores.</span>
+            </p>
+            <div class="diagram-container" onclick="openLightbox('images/nodered_dashboard_flow.png', 'Node-RED dashboard layout flows diagram')">
+                <img class="diagram-img" src="images/nodered_dashboard_flow.png" alt="Node-RED Dashboard layout mapping">
+                <div class="diagram-caption">
+                    <span class="lang-en">Figure 7: Flows feeding the UI components (Gauges, Switches) in Node-RED.</span>
+                    <span class="lang-es">Figura 7: Flujos que alimentan los componentes de la interfaz de usuario (indicadores, interruptores) en Node-RED.</span>
+                </div>
+            </div>
+
+            <h2>
+                <span class="lang-en">Rendered Responsive Dashboard UI</span>
+                <span class="lang-es">UI de Dashboard Responsivo Renderizado</span>
+            </h2>
+            <div style="display: flex; gap: 20px; flex-wrap: wrap; justify-content: center; margin-top: 20px;">
+                <div class="diagram-container" style="flex: 1; min-width: 300px;" onclick="openLightbox('images/dashboard_pc.png', 'PC Browser Dashboard view')">
+                    <img class="diagram-img" src="images/dashboard_pc.png" alt="Web Browser Dashboard">
+                    <div class="diagram-caption">
+                        <span class="lang-en">PC Web Browser rendering</span>
+                        <span class="lang-es">Renderizado en Navegador PC</span>
+                    </div>
+                </div>
+                <div class="diagram-container" style="flex: 1; min-width: 300px;" onclick="openLightbox('images/dashboard_mobile.png', 'Mobile Smartphone Dashboard view')">
+                    <img class="diagram-img" src="images/dashboard_mobile.png" alt="Mobile Dashboard View">
+                    <div class="diagram-caption">
+                        <span class="lang-en">Smartphone responsive rendering</span>
+                        <span class="lang-es">Renderizado responsivo en Celular</span>
+                    </div>
+                </div>
+            </div>
+            
+            <h2>
+                <span class="lang-en">Local MQTT Testing via Terminal (CLI)</span>
+                <span class="lang-es">Pruebas Locales de MQTT por Terminal (CLI)</span>
+            </h2>
+            <p>
+                <span class="lang-en">Use terminal sessions on the Raspberry Pi Zero W to listen to the test topic and check that Mosquitto is active:</span>
+                <span class="lang-es">Utilice sesiones de terminal en la Raspberry Pi Zero W para escuchar el tópico de prueba y verificar que Mosquitto esté activo:</span>
+            </p>
+            <div class="code-container">
+                <div class="code-header">
+                    <div class="code-title">Terminal SSH - Subscribe</div>
+                </div>
+                <pre class="code-pre"><code><span class="c-comment"># Subscribe and listen to the test channel</span>
+mosquitto_sub -d -t hello_topic</code></pre>
+            </div>
+            <div class="code-container">
+                <div class="code-header">
+                    <div class="code-title">Terminal SSH - Publish</div>
+                </div>
+                <pre class="code-pre"><code><span class="c-comment"># Publish testing messages from a separate terminal instance</span>
+mosquitto_pub -d -t hello_topic -m "hello from RaspberryPi"</code></pre>
+            </div>
+        </div>
+    </div>
+
+    <!-- Lightbox Modal Container -->
+    <div class="lightbox-modal" id="lightbox-modal" onclick="closeLightbox()">
+        <img class="lightbox-content" id="lightbox-content" src="" alt="Expanded View">
+        <div class="lightbox-caption" id="lightbox-caption"></div>
+    </div>
+
+    <!-- Page Scripts -->
+    <script>
+        // Toggle Language
+        function toggleLanguage() {
+            const body = document.body;
+            const currentLang = body.getAttribute('data-lang');
+            const newLang = currentLang === 'en' ? 'es' : 'en';
+            body.setAttribute('data-lang', newLang);
+            
+            // Toggle label highlights
+            const enLabel = document.getElementById('lang-en-label');
+            const esLabel = document.getElementById('lang-es-label');
+            if (newLang === 'en') {
+                enLabel.classList.add('active');
+                esLabel.classList.remove('active');
+            } else {
+                esLabel.classList.add('active');
+                enLabel.classList.remove('active');
+            }
+        }
+
+        // Toggle Dark/Light Theme
+        function toggleTheme() {
+            const body = document.body;
+            const currentTheme = body.getAttribute('data-theme') || 'dark';
+            const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+            body.setAttribute('data-theme', newTheme);
+            
+            const darkIcon = document.getElementById('theme-icon-dark');
+            const lightIcon = document.getElementById('theme-icon-light');
+            if (newTheme === 'dark') {
+                darkIcon.style.display = 'block';
+                lightIcon.style.display = 'none';
+            } else {
+                darkIcon.style.display = 'none';
+                lightIcon.style.display = 'block';
+            }
+        }
+
+        // Tab Switching Logic
+        function switchTab(tabId) {
+            // Remove active class from all tabs
+            const tabs = document.querySelectorAll('.tab-item');
+            tabs.forEach(tab => tab.classList.remove('active'));
+            
+            // Remove active class from all links in sidebar
+            const links = document.querySelectorAll('.nav-link');
+            links.forEach(link => link.classList.remove('active'));
+            
+            // Add active class to selected tab item & corresponding nav link
+            const targetTab = document.getElementById(`tab-${tabId}`);
+            if (targetTab) targetTab.classList.add('active');
+            
+            // Find sidebar link corresponding to index or switch index
+            const navLinks = document.querySelectorAll('.nav-link');
+            navLinks.forEach(link => {
+                const clickAttr = link.getAttribute('onclick');
+                if (clickAttr && clickAttr.includes(tabId)) {
+                    link.classList.add('active');
+                }
+            });
+
+            // Switch active panel
+            const panels = document.querySelectorAll('.content-panel');
+            panels.forEach(panel => panel.classList.remove('active'));
+            
+            const targetPanel = document.getElementById(`panel-${tabId}`);
+            if (targetPanel) {
+                targetPanel.classList.add('active');
+                // Scroll main content to top
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            }
+        }
+
+        // Code block switching logic
+        function switchCodeBlock(type) {
+            const tabs = document.querySelectorAll('.code-sel-tab');
+            tabs.forEach(tab => tab.classList.remove('active'));
+            
+            const viewers = document.querySelectorAll('.code-block-viewer');
+            viewers.forEach(v => v.classList.remove('active'));
+            
+            document.getElementById(`code-tab-${type}`).classList.add('active');
+            document.getElementById(`code-block-${type}`).classList.add('active');
+        }
+
+        // Code copier logic
+        function copyCode(contentId) {
+            const codeText = document.getElementById(contentId).innerText;
+            navigator.clipboard.writeText(codeText).then(() => {
+                const btn = document.querySelector(`#${contentId}`).closest('.code-container').querySelector('.btn-copy');
+                const originalText = btn.innerText;
+                btn.innerText = 'Copied!';
+                setTimeout(() => {
+                    btn.innerText = originalText;
+                }, 2000);
+            });
+        }
+
+        // Lightbox gallery modal
+        function openLightbox(src, caption) {
+            const modal = document.getElementById('lightbox-modal');
+            const img = document.getElementById('lightbox-content');
+            const cap = document.getElementById('lightbox-caption');
+            
+            img.src = src;
+            cap.innerText = caption;
+            modal.classList.add('show');
+        }
+
+        document.getElementById('lightbox-modal').addEventListener('click', function(e) {
+            if (e.target !== document.getElementById('lightbox-content')) {
+                closeLightbox();
+            }
+        });
+
+        function closeLightbox() {
+            document.getElementById('lightbox-modal').classList.remove('show');
+        }
+        
+        // ESC key close lightbox
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                closeLightbox();
+            }
+        });
+    </script>
+</body>
+</html>
