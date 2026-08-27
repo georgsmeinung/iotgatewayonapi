@@ -13,6 +13,14 @@
         href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;700&family=Inter:wght@300;400;500;600;700;800&family=Outfit:wght@400;500;600;700;800&display=swap"
         rel="stylesheet">
 
+    <!-- Favicon & App Icons -->
+    <link rel="icon" type="image/svg+xml" href="favicon.svg">
+    <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
+    <link rel="manifest" href="site.webmanifest">
+    <meta name="theme-color" content="#0ea5e9">
+
     <!-- Custom Styles -->
     <link rel="stylesheet" href="style.css">
 </head>
@@ -268,8 +276,8 @@
             </p>
 
             <div class="diagram-container"
-                onclick="openLightbox('images/general_architecture.png', 'General System Architecture Diagram')">
-                <img class="diagram-img" src="images/general_architecture.png"
+                onclick="openLightbox('images/general_architecture.jpg', 'General System Architecture Diagram')">
+                <img class="diagram-img" src="images/general_architecture.jpg"
                     alt="General System Architecture Diagram">
                 <div class="diagram-caption">
                     <span class="lang-en">Figure 1: General deployment diagram illustrating Wi-Fi / Ethernet nodes and
@@ -448,8 +456,8 @@
                 conectado por LAN, el broker local, las interfaces de usuario y el motor de reglas de Node-RED:</p>
 
             <div class="diagram-container"
-                onclick="openLightbox('images/image2.png', 'Esquemático de la Arquitectura General / General Solution Deployment Schematic')">
-                <img class="diagram-img" src="images/image2.png" alt="Arquitectura General de Despliegue">
+                onclick="openLightbox('images/general_architecture.jpg', 'Esquemático de la Arquitectura General / General Solution Deployment Schematic')">
+                <img class="diagram-img" src="images/general_architecture.jpg" alt="Arquitectura General de Despliegue">
                 <div class="diagram-caption">Figura 3: Esquemático completo que ilustra los sectores WiFi y Ethernet del
                     gateway domótico.</div>
             </div>
@@ -726,7 +734,8 @@ String macToStr(const uint8_t* mac) {
             </div>
 
             <p>Al publicar el mensaje, la ventana de suscripción visualizará en tiempo real:
-                <code>"hello from RaspberryPi"</code>.</p>
+                <code>"hello from RaspberryPi"</code>.
+            </p>
 
             <h2>6. Implantación del Dashboard en Node-RED en el Raspberry Pi</h2>
             <p>Se utiliza Node-RED para implementar el flujo de lectura/publicación de tópicos de control y
@@ -969,8 +978,8 @@ String macToStr(const uint8_t* mac) {
             </p>
 
             <div class="diagram-container"
-                onclick="openLightbox('images/tech_stack.png', 'IoT Platform Technology Stack / Pila Tecnológica de la Plataforma IoT')">
-                <img class="diagram-img" src="images/tech_stack.png" alt="IoT Platform Technology Stack">
+                onclick="openLightbox('images/tech_stack.jpg', 'IoT Platform Technology Stack / Pila Tecnológica de la Plataforma IoT')">
+                <img class="diagram-img" src="images/tech_stack.jpg" alt="IoT Platform Technology Stack">
                 <div class="diagram-caption">
                     <span class="lang-en">Figure 2: Technology Stack of the PoC, showing physical layers up to
                         visualization.</span>
@@ -1065,8 +1074,8 @@ String macToStr(const uint8_t* mac) {
             </p>
 
             <div class="diagram-container"
-                onclick="openLightbox('images/general_architecture.png', 'General Solution Deployment / Despliegue General de la Solución')">
-                <img class="diagram-img" src="images/general_architecture.png" alt="General Solution Architecture">
+                onclick="openLightbox('images/general_architecture.jpg', 'General Solution Deployment / Despliegue General de la Solución')">
+                <img class="diagram-img" src="images/general_architecture.jpg" alt="General Solution Architecture">
                 <div class="diagram-caption">
                     <span class="lang-en">Figure 3: General deployment diagram illustrating the wireless connection
                         between the NodeMCU node and the Raspberry Pi Gateway.</span>
