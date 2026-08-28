@@ -8,7 +8,7 @@ This repository implements a Proof of Concept (PoC) for a local, scalable, and r
 
 It analyzes the communication architecture between transducers (sensors & actuators) and user interfaces (UI) using the lightweight **MQTT** messaging protocol.
 
----
+----
 
 ## 📖 Project Documentation
 
