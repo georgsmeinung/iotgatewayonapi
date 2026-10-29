@@ -14,7 +14,7 @@ It analyzes the communication architecture between transducers (sensors & actuat
 
 We have built a premium, interactive, and bilingual documentation hub containing all design schematics, academic reports, and setup guides.
 
-👉 **[Open Local Interactive Documentation](docs/index.html)** *(Open in any Web Browser)*
+👉 **[Open Local Interactive Documentation](https://jorgenicolau.ar/iotgatewayonapi/)** *(Open in any Web Browser)*
 
 ### Key Documentation Features:
 *   **Bilingual Content**: Instant toggle between English and Spanish translations.
